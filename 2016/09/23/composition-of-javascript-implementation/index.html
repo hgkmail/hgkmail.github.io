@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="黄国锴在 Github 上的个人博客">
+    <meta name="keyword" content="web fe js html css">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="CoderKim" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        JavaScript实现的组成｜CoderKim&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="http://coderkim.tech/2016/09/23/composition-of-javascript-implementation/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('http://7xpq1f.com1.z0.glb.clouddn.com/50530d81626bd_meitu_1.jpg')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    CoderKim
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="http://7xpq1f.com1.z0.glb.clouddn.com/2556355738503452903_meitu_1.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('http://7xpq1f.com1.z0.glb.clouddn.com/2556355738503452903_meitu_1.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>JavaScript实现的组成</h1>
+                    
+                    <span class="meta">
+                         作者 CoderKim
+                        <span>
+                          日期 2016-09-23
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            JavaScript实现的组成
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>一个完整的JavaScript实现应该由下列三个不同的部分组成：</p>
+<ul>
+<li>核心（ECMAScript）</li>
+<li>文档对象模型（DOM）</li>
+<li>浏览器对象模型（BOM）</li>
+</ul>
+<h3 id="1-核心（ECMAScript）"><a href="#1-核心（ECMAScript）" class="headerlink" title="1. 核心（ECMAScript）"></a>1. 核心（ECMAScript）</h3><p>它是一种由ECMA国际（前身为欧洲计算机制造商协会）制定和发布的脚本语言规范，JavaScript实现了ECMAScript，Adobe ActionScript同样也实现了ECMAScript。ECMAScript第六版已经于2015年发布，某些浏览器已经开始支持ES6了，ES6的浏览器支持情况可以在<a href="http://kangax.github.io/compat-table/es6/" target="_blank" rel="external">这里</a>查看。</p>
+<h3 id="2-文档对象模型（DOM）"><a href="#2-文档对象模型（DOM）" class="headerlink" title="2. 文档对象模型（DOM）"></a>2. 文档对象模型（DOM）</h3><p>它是针对XML但经过扩展用于HTML的应用编程接口，它把整个页面映射为一个多层节点结构。比如下图：<img src="http://7xpq1f.com1.z0.glb.clouddn.com/1342618354_6087.jpg" alt="DOM例子"></p>
+<p>DOM分为3个level，DOM Level 1的目标主要是映射文档的结构，DOM Level 2引入了视图（DOM Views）、事件（DOM Events）、样式（DOM Style）和遍历（DOM Traversal and Range）等，DOM Level 3引入XPath等高级扩展。</p>
+<h3 id="3-浏览器对象模型（BOM）"><a href="#3-浏览器对象模型（BOM）" class="headerlink" title="3. 浏览器对象模型（BOM）"></a>3. 浏览器对象模型（BOM）</h3><p>它是针对浏览器的JavaScript扩展，只处理浏览器的窗口和框架，一开始没有统一的标准，HTML5后BOM开始建立正式的规范。BOM的结构一般如下图：<img src="http://7xpq1f.com1.z0.glb.clouddn.com/browser_objects.png" alt="BOM的结构"></p>
+<p>frames[]表示窗口中所有命名的框架，history对象包含用户（在浏览器窗口中）访问过的 URL，location对象包含有关当前URL的信息，比如主机名和端口号，navigator对象包含有关浏览器的信息，screen对象包含有关客户端显示屏幕的信息。</p>
+<p>window对象是BOM的顶层对象，其他BOM对象都是通过它延伸出来的，即window的子对象。由于window是顶层对象，因此调用它的子对象时可以不显式指明window对象。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">// 下面两行代码是一样的</div><div class="line">document.write(&quot;hello&quot;);</div><div class="line">window.document.write(&quot;hello&quot;);</div></pre></td></tr></table></figure></p>
+<p>参考：</p>
+<ul>
+<li><a href="http://www.dreamdu.com/javascript/what_is_bom/" target="_blank" rel="external">什么是BOM</a></li>
+<li><a href="http://blog.csdn.net/ghsau/article/details/7760826" target="_blank" rel="external">HTML DOM(一)：认识DOM</a></li>
+<li><a href="https://www.amazon.cn/dp/B007OQQVMY/ref=cm_sw_r_si_2_dp_ipuYxbGXN2PP7" target="_blank" rel="external">《JavaScript高级程序设计》</a></li>
+<li><a href="http://www.jianshu.com/p/b6d76160889d" target="_blank" rel="external">ECMAScript5和ECMAScript6的新特性及浏览器支持情况</a></li>
+</ul>
+
+                <hr>
+                
+                <!-- 多说 Share start -->
+                <div class="ds-share"
+                     style="text-align: right"
+                     data-thread-key="2016/09/23/composition-of-javascript-implementation/"
+                     data-title="JavaScript实现的组成"
+                     data-url="http://coderkim.tech/2016/09/23/composition-of-javascript-implementation/"
+                     data-images=""
+                     data-content="一个完整的JavaScript实现应该由下列三个不同的部分组成：
+
+核心（ECMAScript... | CoderKim&#39;s blog ">
+                    <div class="ds-share-inline">
+                        <ul class="ds-share-icons-16">
+                            <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                            <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                            <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                            <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                        </ul>
+                        <div class="ds-share-icons-more">
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2016/09/25/using-javascript-in-html/" data-toggle="tooltip" data-placement="top"
+                           title="在HTML中引入JavaScript">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                         data-thread-key="2016/09/23/composition-of-javascript-implementation/"
+                         data-title="JavaScript实现的组成"
+                         data-url="http://coderkim.tech/2016/09/23/composition-of-javascript-implementation/">
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-核心（ECMAScript）"><span class="toc-text">1. 核心（ECMAScript）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-文档对象模型（DOM）"><span class="toc-text">2. 文档对象模型（DOM）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-浏览器对象模型（BOM）"><span class="toc-text">3. 浏览器对象模型（BOM）</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'coderkimblog';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user};
+    (function () {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';
+        ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/coderkim">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/coderkim">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/hgkmail">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CoderKim 2016
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://coderkim.tech/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','null','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="http://7xpq1f.com1.z0.glb.clouddn.com/50530d81626bd_meitu_1.jpg">
+</body>
+
+</html>

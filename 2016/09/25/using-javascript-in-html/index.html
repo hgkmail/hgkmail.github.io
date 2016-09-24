@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        Hello World｜CoderKim&#39;s blog
+        在HTML中引入JavaScript｜CoderKim&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://coderkim.tech/2016/09/24/hello-world/">
+    <link rel="canonical" href="http://coderkim.tech/2016/09/25/using-javascript-in-html/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -136,12 +136,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>Hello World</h1>
+                    <h1>在HTML中引入JavaScript</h1>
                     
                     <span class="meta">
                          作者 CoderKim
                         <span>
-                          日期 2016-09-24
+                          日期 2016-09-25
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -153,7 +153,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            Hello World
+            在HTML中引入JavaScript
         </span>
     </div>
 </header>
@@ -164,26 +164,21 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+                <p>在HTML中引入JavaScript使用script元素，分为嵌入代码和外部文件代码2种，嵌入代码虽然没有什么问题，但不好维护，一般使用外部文件代码，它具有可维护和可缓存的优点。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;!-- 嵌入代码 --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">function sayHello() &#123;</div><div class="line">    alert(&quot;hello&quot;);</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;!-- 外部文件代码 --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example.js&quot;&gt;&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p>按照惯例，script元素一般放在head元素中，如果有多个script元素，浏览器会按照顺序逐个下载和解析。放在head元素中有个缺点，就是必须等到全部的JavaScript下载、解析和执行完后才能呈现页面的内容（浏览器遇到body元素才开始呈现页面内容），下载尤其占用时间。因此可以把script元素放在body元素中的底部，这样页面呈现完后才开始涉及JavaScript，浏览器显示空白页的时间会缩短。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;head&gt;</div><div class="line">...</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">&lt;!-- 这里放内容... --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example1.js&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example2.js&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure></p>
+<p>script元素有2个和JavaScript加载顺序有关的属性：defer=”defer”表示立即下载脚本但等页面解析完再执行，async=”async”表示异步下载和执行脚本，脚本的下载和执行不会影响页面解析，由于异步其顺序无法确定，所以用async属性的脚本不能依赖其他脚本。</p>
+<p>浏览器在JavaScript被禁用时会显示noscript元素的内容。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">&lt;noscript&gt;</div><div class="line">&lt;p&gt;本页面需要启用JavaScript</div><div class="line">&lt;/noscript&gt;</div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure></p>
 
                 <hr>
                 
                 <!-- 多说 Share start -->
                 <div class="ds-share"
                      style="text-align: right"
-                     data-thread-key="2016/09/24/hello-world/"
-                     data-title="Hello World"
-                     data-url="http://coderkim.tech/2016/09/24/hello-world/"
+                     data-thread-key="2016/09/25/using-javascript-in-html/"
+                     data-title="在HTML中引入JavaScript"
+                     data-url="http://coderkim.tech/2016/09/25/using-javascript-in-html/"
                      data-images=""
-                     data-content="Welcome to Hexo! This is your very first post. ... | CoderKim&#39;s blog ">
+                     data-content="在HTML中引入JavaScript使用script元素，分为嵌入代码和外部文件代码2种，嵌入... | CoderKim&#39;s blog ">
                     <div class="ds-share-inline">
                         <ul class="ds-share-icons-16">
                             <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
@@ -201,6 +196,16 @@
 
                 <ul class="pager">
                     
+                    <li class="previous">
+                        <a href="/2016/09/25/using-JSONP-to-solve-AJAX-cross-domain-problem/" data-toggle="tooltip" data-placement="top"
+                           title="使用JSONP解决AJAX跨域问题">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2016/09/23/composition-of-javascript-implementation/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript实现的组成">Next Post &rarr;</a>
+                    </li>
                     
                 </ul>
 
@@ -208,9 +213,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2016/09/24/hello-world/"
-                         data-title="Hello World"
-                         data-url="http://coderkim.tech/2016/09/24/hello-world/">
+                         data-thread-key="2016/09/25/using-javascript-in-html/"
+                         data-title="在HTML中引入JavaScript"
+                         data-url="http://coderkim.tech/2016/09/25/using-javascript-in-html/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -222,7 +227,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+                    
                 </div>
             </div>
         </div>

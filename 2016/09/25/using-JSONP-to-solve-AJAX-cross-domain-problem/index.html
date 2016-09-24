@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="黄国锴在 Github 上的个人博客">
+    <meta name="keyword" content="web fe js html css">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="CoderKim" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        使用JSONP解决AJAX跨域问题｜CoderKim&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="http://coderkim.tech/2016/09/25/using-JSONP-to-solve-AJAX-cross-domain-problem/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('http://7xpq1f.com1.z0.glb.clouddn.com/50530d81626bd_meitu_1.jpg')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    CoderKim
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="http://7xpq1f.com1.z0.glb.clouddn.com/2556355738503452903_meitu_1.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('http://7xpq1f.com1.z0.glb.clouddn.com/2556355738503452903_meitu_1.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>使用JSONP解决AJAX跨域问题</h1>
+                    
+                    <span class="meta">
+                         作者 CoderKim
+                        <span>
+                          日期 2016-09-25
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            使用JSONP解决AJAX跨域问题
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h3 id="1-同源策略"><a href="#1-同源策略" class="headerlink" title="1.同源策略"></a>1.同源策略</h3><blockquote>
+<p>同源策略阻止从一个域上加载的脚本获取或操作另一个域上的文档属性。也就是说，受到请求的 URL 的域必须与当前 Web 页面的域相同。这意味着浏览器隔离来自不同源的内容，以防止它们之间的操作。这个浏览器策略很旧，从 Netscape Navigator 2.0 版本开始就存在。</p>
+</blockquote>
+<p>也就是说AJAX异步请求的url必须和当前页面的url有相同的domain，这在很多情况是不符合要求的，比如我的个人网站向一个天气网站请求天气数据，就请求不了。</p>
+<h3 id="2-script元素的src属性"><a href="#2-script元素的src属性" class="headerlink" title="2.script元素的src属性"></a>2.script元素的src属性</h3><p>script标签的src属性并不被同源策略所约束，可以获取任何服务器上脚本并执行，利用这点可以解决AJAX跨域问题。</p>
+<h3 id="3-JSONP"><a href="#3-JSONP" class="headerlink" title="3.JSONP"></a>3.JSONP</h3><p>JSONP（JSON with Padding）是一个非官方的协议，它允许在服务器端集成script元素返回至客户端，通过JavaScript callback的形式实现跨域访问，callback中传递的数据一般是JSON，所以叫JSON with Padding。下面是一个简单的实现形式（程序A和程序B是不同domain的）：</p>
+<p>程序A中sample的部分代码：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">// 定义回调函数</div><div class="line">function callback(data) &#123;</div><div class="line">    alert(data.message);</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;!-- 跨域JavaScript --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;http://localhost:20001/test.js&quot;&gt;&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p>程序B中test.js的代码：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">//调用callback函数，并以json数据形式作为参数传递，完成回调</div><div class="line">callback(&#123;message:&quot;success&quot;&#125;);</div></pre></td></tr></table></figure></p>
+<h3 id="4-JSONP的自动化"><a href="#4-JSONP的自动化" class="headerlink" title="4.JSONP的自动化"></a>4.JSONP的自动化</h3><p>一般情况下，我们希望这个跨域script标签能够动态生成，而不是像上面固定在html里面所以没等页面显示就执行了，很不灵活。我们可以通过JavaScript动态地创建script标签，这样我们就可以灵活调用远程服务了。</p>
+<p>比如Google的ajax搜索接口：<a href="http://ajax.googleapis.com/ajax/services/search/web?v=1.0&amp;q=?&amp;callback=?" target="_blank" rel="external">http://ajax.googleapis.com/ajax/services/search/web?v=1.0&amp;q=?&amp;callback=?</a> </p>
+<p>q=?这个问号是表示你要搜索的内容，<strong>最重要的是第二个callback=?这个是正如其名表示回调函数的名称</strong>，也就是将你自己在客户端定义的回调函数的函数名传送给服务端，服务端则会返回以你定义的回调函数名的方法，将获取的json数据传入这个方法完成回调。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">    // 动态添加script标签</div><div class="line">    function addScriptTag(src)&#123;</div><div class="line">        var script = document.createElement(&apos;script&apos;);</div><div class="line">        script.setAttribute(&quot;type&quot;,&quot;text/javascript&quot;);</div><div class="line">        script.src = src;</div><div class="line">        document.body.appendChild(script);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    window.onload = function()&#123;</div><div class="line">        //搜索apple，将自定义的回调函数名result传入callback参数中</div><div class="line">        addScriptTag(&quot;http://ajax.googleapis.com/ajax/services/search/web?v=1.0&amp;q=apple&amp;callback=result&quot;);</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    //自定义的回调函数result</div><div class="line">    function result(data) &#123;</div><div class="line">        //我们就简单的获取apple搜索结果的第一条记录中url数据</div><div class="line">        alert(data.responseData.results[0].unescapedUrl);</div><div class="line">    &#125;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p>用script标签来调用跨域的远程接口，用callback来接收数据，这的确有点绕。。。</p>
+<p>参考：</p>
+<ul>
+<li><a href="http://www.cnblogs.com/chopper/archive/2012/03/24/2403945.html" target="_blank" rel="external">深入浅出JSONP–解决ajax跨域问题</a></li>
+<li><a href="http://justcoding.iteye.com/blog/1366102/" target="_blank" rel="external">AJAX 跨域请求 - JSONP获取JSON数据</a></li>
+</ul>
+
+                <hr>
+                
+                <!-- 多说 Share start -->
+                <div class="ds-share"
+                     style="text-align: right"
+                     data-thread-key="2016/09/25/using-JSONP-to-solve-AJAX-cross-domain-problem/"
+                     data-title="使用JSONP解决AJAX跨域问题"
+                     data-url="http://coderkim.tech/2016/09/25/using-JSONP-to-solve-AJAX-cross-domain-problem/"
+                     data-images=""
+                     data-content="1.同源策略
+同源策略阻止从一个域上加载的脚本获取或操作另一个域上的文档属性。也就是说，受到请... | CoderKim&#39;s blog ">
+                    <div class="ds-share-inline">
+                        <ul class="ds-share-icons-16">
+                            <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                            <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                            <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                            <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                        </ul>
+                        <div class="ds-share-icons-more">
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2016/09/25/using-javascript-in-html/" data-toggle="tooltip" data-placement="top"
+                           title="在HTML中引入JavaScript">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                         data-thread-key="2016/09/25/using-JSONP-to-solve-AJAX-cross-domain-problem/"
+                         data-title="使用JSONP解决AJAX跨域问题"
+                         data-url="http://coderkim.tech/2016/09/25/using-JSONP-to-solve-AJAX-cross-domain-problem/">
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-同源策略"><span class="toc-text">1.同源策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-script元素的src属性"><span class="toc-text">2.script元素的src属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-JSONP"><span class="toc-text">3.JSONP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-JSONP的自动化"><span class="toc-text">4.JSONP的自动化</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'coderkimblog';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user};
+    (function () {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';
+        ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/coderkim">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/coderkim">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/hgkmail">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CoderKim 2016
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://coderkim.tech/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','null','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="http://7xpq1f.com1.z0.glb.clouddn.com/50530d81626bd_meitu_1.jpg">
+</body>
+
+</html>
