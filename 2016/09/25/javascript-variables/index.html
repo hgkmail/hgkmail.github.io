@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        在HTML中引入JavaScript｜CoderKim&#39;s blog
+        JavaScript的变量｜CoderKim&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://coderkim.tech/2016/09/25/using-javascript-in-html/">
+    <link rel="canonical" href="http://coderkim.tech/2016/09/25/javascript-variables/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -136,7 +136,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>在HTML中引入JavaScript</h1>
+                    <h1>JavaScript的变量</h1>
                     
                     <span class="meta">
                          作者 CoderKim
@@ -153,7 +153,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            在HTML中引入JavaScript
+            JavaScript的变量
         </span>
     </div>
 </header>
@@ -164,21 +164,37 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>在HTML中引入JavaScript使用script元素，分为嵌入代码和外部文件代码2种，嵌入代码虽然没有什么问题，但不好维护，一般使用外部文件代码，它具有可维护和可缓存的优点。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;!-- 嵌入代码 --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">function sayHello() &#123;</div><div class="line">    alert(&quot;hello&quot;);</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;!-- 外部文件代码 --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example.js&quot;&gt;&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>按照惯例，script元素一般放在head元素中，如果有多个script元素，浏览器会按照顺序逐个下载和解析。放在head元素中有个缺点，就是必须等到全部的JavaScript下载、解析和执行完后才能呈现页面的内容（浏览器遇到body元素才开始呈现页面内容），下载尤其占用时间。因此可以把script元素放在body元素中的底部，这样页面呈现完后才开始涉及JavaScript，浏览器显示空白页的时间会缩短。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;head&gt;</div><div class="line">...</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">&lt;!-- 这里放内容... --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example1.js&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example2.js&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure></p>
-<p>script元素有2个和JavaScript加载顺序有关的属性：defer=”defer”表示立即下载脚本但等页面解析完再执行，async=”async”表示异步下载和执行脚本，脚本的下载和执行不会影响页面解析，由于异步其顺序无法确定，所以用async属性的脚本不能依赖其他脚本。</p>
-<p>浏览器在JavaScript被禁用时会显示noscript元素的内容。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">&lt;noscript&gt;</div><div class="line">&lt;p&gt;本页面需要启用JavaScript</div><div class="line">&lt;/noscript&gt;</div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure></p>
+                <p>ECMAScript的变量是松散类型的，可以用来保存任意类型的数据，换句话说，每个变量只是一个保存值的占位符。变量名可以用美元符号$。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">var message=&quot;hello&quot;;  // 先是字符串类型</div><div class="line">message=100;          // 然后是数值类型</div></pre></td></tr></table></figure></p>
+<h2 id="1-全局变量和局部变量"><a href="#1-全局变量和局部变量" class="headerlink" title="1.全局变量和局部变量"></a>1.全局变量和局部变量</h2><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">function test1() &#123;</div><div class="line">    var n=1; // 局部变量，前面有var</div><div class="line">&#125;</div><div class="line"></div><div class="line">function test2() &#123;</div><div class="line">    m=&quot;hello&quot;; // 全局变量，前面无var</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="2-变量类型操作符"><a href="#2-变量类型操作符" class="headerlink" title="2.变量类型操作符"></a>2.变量类型操作符</h2><p>因为ECMAScript的变量是松散类型的，所以需要一种手段来检测变量的类型——typeof，使用typeof会返回一个字符串来代表类型：undefined（变量未定义或变量类型未指定），boolean，string，number，object（对象或null）和function（函数，其实函数也是对象）。</p>
+<h2 id="3-变量的类型"><a href="#3-变量的类型" class="headerlink" title="3.变量的类型"></a>3.变量的类型</h2><p>ECMAScript只有6种数据类型，5种简单类型Undefined、Null、Boolean、Number和String，1种复杂类型Object，Object本质是一组无序的key/value对。</p>
+<p><strong>Undefined</strong>类型只有一个值undefined，使用var定义变量但<strong>未初始化/未指定变量的类型</strong>时，变量的值就是undefined。如果是变量未定义，则会产生错误。所以undefined是未定义类型，而不是未定义变量。不过typeof对变量未定义和未初始化都返回undefined。</p>
+<p><strong>Null</strong>类型只有一个值null，表示空对象，typeof null会返回object。undefined是派生自null的，所以undefined == null会返回true，不过它们的用途不一样，undefined表示变量未初始化，null表示变量是空对象。</p>
+<p><strong>Boolean</strong>类型有2个值true和false，它们和1、0并无关系，但可以转化。<br>数据类型 | 转化为true | 转化为false<br>—|—|—<br>String | 非空字符串 | 空字符串<br>Number | 非零（包括无穷大） | 0或NaN<br>Object | 任何非空对象 | null</p>
+<p><strong>Number</strong>类型既可以表示整数，也可以表示浮点数，浮点数会产生舍入误差，比如0.1+0.2=0.3000000000004。数值范围Number.MAX_VALUE和Number.MIN_VALUE。isNaN()用来判断是不是NaN（Not a Number）。把String转化为Number一般用parseInt()或者parseFloat()，用Number()会存在不确定性。</p>
+<p><strong>String</strong>类型表示字符串，把其他类型转化为字符串一般使用方法toString()。</p>
+<p><strong>Object</strong>类型表示对象，object的每个实例都具有下列的属性和方法：</p>
+<ul>
+<li>constructor：创建当前对象的函数。</li>
+<li>hasOwnProperty(propertyName)：用于检查指定的属性是否在当前实例中，而不是在实例的原型中。</li>
+<li>isPrototypeOf(object)：当前对象是否是另一个对象的原型。</li>
+<li>propertyIsEnumerable(propertyName)：属性是否能够用for-in语句枚举</li>
+<li>toLocalString()</li>
+<li>toString()</li>
+<li>valueOf()：返回对象的基本类型表示，通常与toString()相同。<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">var boo = new Boolean(false)</div><div class="line">document.write(boo.valueOf()) // 输出false</div></pre></td></tr></table></figure>
+</li>
+</ul>
 
                 <hr>
                 
                 <!-- 多说 Share start -->
                 <div class="ds-share"
                      style="text-align: right"
-                     data-thread-key="2016/09/25/using-javascript-in-html/"
-                     data-title="在HTML中引入JavaScript"
-                     data-url="http://coderkim.tech/2016/09/25/using-javascript-in-html/"
+                     data-thread-key="2016/09/25/javascript-variables/"
+                     data-title="JavaScript的变量"
+                     data-url="http://coderkim.tech/2016/09/25/javascript-variables/"
                      data-images=""
-                     data-content="在HTML中引入JavaScript使用script元素，分为嵌入代码和外部文件代码2种，嵌入... | CoderKim&#39;s blog ">
+                     data-content="ECMAScript的变量是松散类型的，可以用来保存任意类型的数据，换句话说，每个变量只是一个... | CoderKim&#39;s blog ">
                     <div class="ds-share-inline">
                         <ul class="ds-share-icons-16">
                             <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
@@ -197,14 +213,14 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2016/09/25/using-JSONP-to-solve-AJAX-cross-domain-problem/" data-toggle="tooltip" data-placement="top"
-                           title="使用JSONP解决AJAX跨域问题">&larr; Previous Post</a>
+                        <a href="/2016/09/25/javascript-function/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript的函数">&larr; Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2016/09/23/composition-of-javascript-implementation/" data-toggle="tooltip" data-placement="top"
-                           title="JavaScript实现的组成">Next Post &rarr;</a>
+                        <a href="/2016/09/25/using-JSONP-to-solve-AJAX-cross-domain-problem/" data-toggle="tooltip" data-placement="top"
+                           title="使用JSONP解决AJAX跨域问题">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -213,9 +229,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2016/09/25/using-javascript-in-html/"
-                         data-title="在HTML中引入JavaScript"
-                         data-url="http://coderkim.tech/2016/09/25/using-javascript-in-html/">
+                         data-thread-key="2016/09/25/javascript-variables/"
+                         data-title="JavaScript的变量"
+                         data-url="http://coderkim.tech/2016/09/25/javascript-variables/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -227,7 +243,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-全局变量和局部变量"><span class="toc-text">1.全局变量和局部变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-变量类型操作符"><span class="toc-text">2.变量类型操作符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-变量的类型"><span class="toc-text">3.变量的类型</span></a></li></ol>
                 </div>
             </div>
         </div>

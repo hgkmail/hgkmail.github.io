@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="黄国锴在 Github 上的个人博客">
-    <meta name="keyword" content="web fe js html css">
+    <meta name="keyword" content="web js html css fe">
     <meta name="theme-color" content="#600090">
     <meta name="msapplication-navbutton-color" content="#600090">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -170,10 +170,10 @@
 <li>文档对象模型（DOM）</li>
 <li>浏览器对象模型（BOM）</li>
 </ul>
-<h3 id="1-核心（ECMAScript）"><a href="#1-核心（ECMAScript）" class="headerlink" title="1. 核心（ECMAScript）"></a>1. 核心（ECMAScript）</h3><p>它是一种由ECMA国际（前身为欧洲计算机制造商协会）制定和发布的脚本语言规范，JavaScript实现了ECMAScript，Adobe ActionScript同样也实现了ECMAScript。ECMAScript第六版已经于2015年发布，某些浏览器已经开始支持ES6了，ES6的浏览器支持情况可以在<a href="http://kangax.github.io/compat-table/es6/" target="_blank" rel="external">这里</a>查看。</p>
-<h3 id="2-文档对象模型（DOM）"><a href="#2-文档对象模型（DOM）" class="headerlink" title="2. 文档对象模型（DOM）"></a>2. 文档对象模型（DOM）</h3><p>它是针对XML但经过扩展用于HTML的应用编程接口，它把整个页面映射为一个多层节点结构。比如下图：<img src="http://7xpq1f.com1.z0.glb.clouddn.com/1342618354_6087.jpg" alt="DOM例子"></p>
+<h2 id="1-核心（ECMAScript）"><a href="#1-核心（ECMAScript）" class="headerlink" title="1. 核心（ECMAScript）"></a>1. 核心（ECMAScript）</h2><p>它是一种由ECMA国际（前身为欧洲计算机制造商协会）制定和发布的脚本语言规范，JavaScript实现了ECMAScript，Adobe ActionScript同样也实现了ECMAScript。ECMAScript第六版已经于2015年发布，某些浏览器已经开始支持ES6了，ES6的浏览器支持情况可以在<a href="http://kangax.github.io/compat-table/es6/" target="_blank" rel="external">这里</a>查看。</p>
+<h2 id="2-文档对象模型（DOM）"><a href="#2-文档对象模型（DOM）" class="headerlink" title="2. 文档对象模型（DOM）"></a>2. 文档对象模型（DOM）</h2><p>它是针对XML但经过扩展用于HTML的应用编程接口，它把整个页面映射为一个多层节点结构。比如下图：<img src="http://7xpq1f.com1.z0.glb.clouddn.com/1342618354_6087.jpg" alt="DOM例子"></p>
 <p>DOM分为3个level，DOM Level 1的目标主要是映射文档的结构，DOM Level 2引入了视图（DOM Views）、事件（DOM Events）、样式（DOM Style）和遍历（DOM Traversal and Range）等，DOM Level 3引入XPath等高级扩展。</p>
-<h3 id="3-浏览器对象模型（BOM）"><a href="#3-浏览器对象模型（BOM）" class="headerlink" title="3. 浏览器对象模型（BOM）"></a>3. 浏览器对象模型（BOM）</h3><p>它是针对浏览器的JavaScript扩展，只处理浏览器的窗口和框架，一开始没有统一的标准，HTML5后BOM开始建立正式的规范。BOM的结构一般如下图：<img src="http://7xpq1f.com1.z0.glb.clouddn.com/browser_objects.png" alt="BOM的结构"></p>
+<h2 id="3-浏览器对象模型（BOM）"><a href="#3-浏览器对象模型（BOM）" class="headerlink" title="3. 浏览器对象模型（BOM）"></a>3. 浏览器对象模型（BOM）</h2><p>它是针对浏览器的JavaScript扩展，只处理浏览器的窗口和框架，一开始没有统一的标准，HTML5后BOM开始建立正式的规范。BOM的结构一般如下图：<img src="http://7xpq1f.com1.z0.glb.clouddn.com/browser_objects.png" alt="BOM的结构"></p>
 <p>frames[]表示窗口中所有命名的框架，history对象包含用户（在浏览器窗口中）访问过的 URL，location对象包含有关当前URL的信息，比如主机名和端口号，navigator对象包含有关浏览器的信息，screen对象包含有关客户端显示屏幕的信息。</p>
 <p>window对象是BOM的顶层对象，其他BOM对象都是通过它延伸出来的，即window的子对象。由于window是顶层对象，因此调用它的子对象时可以不显式指明window对象。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">// 下面两行代码是一样的</div><div class="line">document.write(&quot;hello&quot;);</div><div class="line">window.document.write(&quot;hello&quot;);</div></pre></td></tr></table></figure></p>
 <p>参考：</p>
@@ -239,7 +239,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-核心（ECMAScript）"><span class="toc-text">1. 核心（ECMAScript）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-文档对象模型（DOM）"><span class="toc-text">2. 文档对象模型（DOM）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-浏览器对象模型（BOM）"><span class="toc-text">3. 浏览器对象模型（BOM）</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-核心（ECMAScript）"><span class="toc-text">1. 核心（ECMAScript）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-文档对象模型（DOM）"><span class="toc-text">2. 文档对象模型（DOM）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-浏览器对象模型（BOM）"><span class="toc-text">3. 浏览器对象模型（BOM）</span></a></li></ol>
                 </div>
             </div>
         </div>
@@ -253,16 +253,6 @@
                 sidebar-container">
 
                 <!-- Featured Tags -->
-                
-                <section>
-                    <!-- no hr -->
-                    <h5 class="text-center">
-                        <a href="/tags/">FEATURED TAGS</a>
-                    </h5>
-                    <div class="tags">
-                        
-                    </div>
-                </section>
                 
 
                 <!-- Friends Blog -->
@@ -294,6 +284,44 @@
 <!-- 多说公共JS代码 end -->
 
 
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+                o = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener('load', function (e) {
+                c(null, e);
+            }, false);
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function () {
+        anchors.options = {
+            visible: 'always',
+            placement: 'right',
+            icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link {
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top: -0.1em;
+        }
+    }
+</style>
 
 
 
@@ -406,6 +434,18 @@
 
 
 <!-- Baidu Tongji -->
+
+<script>
+    var _baId = '53f8f57e7ddca570b24dd73967dc4b09';
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?" + _baId;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 
 
 <!-- swiftype -->

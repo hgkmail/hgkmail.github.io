@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="黄国锴在 Github 上的个人博客">
-    <meta name="keyword" content="web fe js html css">
+    <meta name="keyword" content="web js html css fe">
     <meta name="theme-color" content="#600090">
     <meta name="msapplication-navbutton-color" content="#600090">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -164,15 +164,15 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <h3 id="1-同源策略"><a href="#1-同源策略" class="headerlink" title="1.同源策略"></a>1.同源策略</h3><blockquote>
+                <h2 id="1-同源策略"><a href="#1-同源策略" class="headerlink" title="1.同源策略"></a>1.同源策略</h2><blockquote>
 <p>同源策略阻止从一个域上加载的脚本获取或操作另一个域上的文档属性。也就是说，受到请求的 URL 的域必须与当前 Web 页面的域相同。这意味着浏览器隔离来自不同源的内容，以防止它们之间的操作。这个浏览器策略很旧，从 Netscape Navigator 2.0 版本开始就存在。</p>
 </blockquote>
 <p>也就是说AJAX异步请求的url必须和当前页面的url有相同的domain，这在很多情况是不符合要求的，比如我的个人网站向一个天气网站请求天气数据，就请求不了。</p>
-<h3 id="2-script元素的src属性"><a href="#2-script元素的src属性" class="headerlink" title="2.script元素的src属性"></a>2.script元素的src属性</h3><p>script标签的src属性并不被同源策略所约束，可以获取任何服务器上脚本并执行，利用这点可以解决AJAX跨域问题。</p>
-<h3 id="3-JSONP"><a href="#3-JSONP" class="headerlink" title="3.JSONP"></a>3.JSONP</h3><p>JSONP（JSON with Padding）是一个非官方的协议，它允许在服务器端集成script元素返回至客户端，通过JavaScript callback的形式实现跨域访问，callback中传递的数据一般是JSON，所以叫JSON with Padding。下面是一个简单的实现形式（程序A和程序B是不同domain的）：</p>
+<h2 id="2-script元素的src属性"><a href="#2-script元素的src属性" class="headerlink" title="2.script元素的src属性"></a>2.script元素的src属性</h2><p>script标签的src属性并不被同源策略所约束，可以获取任何服务器上脚本并执行，利用这点可以解决AJAX跨域问题。</p>
+<h2 id="3-JSONP"><a href="#3-JSONP" class="headerlink" title="3.JSONP"></a>3.JSONP</h2><p>JSONP（JSON with Padding）是一个非官方的协议，它允许在服务器端集成script元素返回至客户端，通过JavaScript callback的形式实现跨域访问，callback中传递的数据一般是JSON，所以叫JSON with Padding。下面是一个简单的实现形式（程序A和程序B是不同domain的）：</p>
 <p>程序A中sample的部分代码：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">// 定义回调函数</div><div class="line">function callback(data) &#123;</div><div class="line">    alert(data.message);</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;!-- 跨域JavaScript --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;http://localhost:20001/test.js&quot;&gt;&lt;/script&gt;</div></pre></td></tr></table></figure></p>
 <p>程序B中test.js的代码：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">//调用callback函数，并以json数据形式作为参数传递，完成回调</div><div class="line">callback(&#123;message:&quot;success&quot;&#125;);</div></pre></td></tr></table></figure></p>
-<h3 id="4-JSONP的自动化"><a href="#4-JSONP的自动化" class="headerlink" title="4.JSONP的自动化"></a>4.JSONP的自动化</h3><p>一般情况下，我们希望这个跨域script标签能够动态生成，而不是像上面固定在html里面所以没等页面显示就执行了，很不灵活。我们可以通过JavaScript动态地创建script标签，这样我们就可以灵活调用远程服务了。</p>
+<h2 id="4-JSONP的自动化"><a href="#4-JSONP的自动化" class="headerlink" title="4.JSONP的自动化"></a>4.JSONP的自动化</h2><p>一般情况下，我们希望这个跨域script标签能够动态生成，而不是像上面固定在html里面所以没等页面显示就执行了，很不灵活。我们可以通过JavaScript动态地创建script标签，这样我们就可以灵活调用远程服务了。</p>
 <p>比如Google的ajax搜索接口：<a href="http://ajax.googleapis.com/ajax/services/search/web?v=1.0&amp;q=?&amp;callback=?" target="_blank" rel="external">http://ajax.googleapis.com/ajax/services/search/web?v=1.0&amp;q=?&amp;callback=?</a> </p>
 <p>q=?这个问号是表示你要搜索的内容，<strong>最重要的是第二个callback=?这个是正如其名表示回调函数的名称</strong>，也就是将你自己在客户端定义的回调函数的函数名传送给服务端，服务端则会返回以你定义的回调函数名的方法，将获取的json数据传入这个方法完成回调。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">    // 动态添加script标签</div><div class="line">    function addScriptTag(src)&#123;</div><div class="line">        var script = document.createElement(&apos;script&apos;);</div><div class="line">        script.setAttribute(&quot;type&quot;,&quot;text/javascript&quot;);</div><div class="line">        script.src = src;</div><div class="line">        document.body.appendChild(script);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    window.onload = function()&#123;</div><div class="line">        //搜索apple，将自定义的回调函数名result传入callback参数中</div><div class="line">        addScriptTag(&quot;http://ajax.googleapis.com/ajax/services/search/web?v=1.0&amp;q=apple&amp;callback=result&quot;);</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    //自定义的回调函数result</div><div class="line">    function result(data) &#123;</div><div class="line">        //我们就简单的获取apple搜索结果的第一条记录中url数据</div><div class="line">        alert(data.responseData.results[0].unescapedUrl);</div><div class="line">    &#125;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
 <p>用script标签来调用跨域的远程接口，用callback来接收数据，这的确有点绕。。。</p>
@@ -210,6 +210,11 @@
 
                 <ul class="pager">
                     
+                    <li class="previous">
+                        <a href="/2016/09/25/javascript-variables/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript的变量">&larr; Previous Post</a>
+                    </li>
+                    
                     
                     <li class="next">
                         <a href="/2016/09/25/using-javascript-in-html/" data-toggle="tooltip" data-placement="top"
@@ -236,7 +241,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-同源策略"><span class="toc-text">1.同源策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-script元素的src属性"><span class="toc-text">2.script元素的src属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-JSONP"><span class="toc-text">3.JSONP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-JSONP的自动化"><span class="toc-text">4.JSONP的自动化</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-同源策略"><span class="toc-text">1.同源策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-script元素的src属性"><span class="toc-text">2.script元素的src属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-JSONP"><span class="toc-text">3.JSONP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-JSONP的自动化"><span class="toc-text">4.JSONP的自动化</span></a></li></ol>
                 </div>
             </div>
         </div>
@@ -250,16 +255,6 @@
                 sidebar-container">
 
                 <!-- Featured Tags -->
-                
-                <section>
-                    <!-- no hr -->
-                    <h5 class="text-center">
-                        <a href="/tags/">FEATURED TAGS</a>
-                    </h5>
-                    <div class="tags">
-                        
-                    </div>
-                </section>
                 
 
                 <!-- Friends Blog -->
@@ -291,6 +286,44 @@
 <!-- 多说公共JS代码 end -->
 
 
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+                o = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener('load', function (e) {
+                c(null, e);
+            }, false);
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function () {
+        anchors.options = {
+            visible: 'always',
+            placement: 'right',
+            icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link {
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top: -0.1em;
+        }
+    }
+</style>
 
 
 
@@ -403,6 +436,18 @@
 
 
 <!-- Baidu Tongji -->
+
+<script>
+    var _baId = '53f8f57e7ddca570b24dd73967dc4b09';
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?" + _baId;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 
 
 <!-- swiftype -->

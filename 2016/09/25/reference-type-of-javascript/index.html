@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        在HTML中引入JavaScript｜CoderKim&#39;s blog
+        JavaScript的引用类型｜CoderKim&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://coderkim.tech/2016/09/25/using-javascript-in-html/">
+    <link rel="canonical" href="http://coderkim.tech/2016/09/25/reference-type-of-javascript/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -136,7 +136,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>在HTML中引入JavaScript</h1>
+                    <h1>JavaScript的引用类型</h1>
                     
                     <span class="meta">
                          作者 CoderKim
@@ -153,7 +153,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            在HTML中引入JavaScript
+            JavaScript的引用类型
         </span>
     </div>
 </header>
@@ -164,21 +164,39 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>在HTML中引入JavaScript使用script元素，分为嵌入代码和外部文件代码2种，嵌入代码虽然没有什么问题，但不好维护，一般使用外部文件代码，它具有可维护和可缓存的优点。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;!-- 嵌入代码 --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">function sayHello() &#123;</div><div class="line">    alert(&quot;hello&quot;);</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;!-- 外部文件代码 --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example.js&quot;&gt;&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>按照惯例，script元素一般放在head元素中，如果有多个script元素，浏览器会按照顺序逐个下载和解析。放在head元素中有个缺点，就是必须等到全部的JavaScript下载、解析和执行完后才能呈现页面的内容（浏览器遇到body元素才开始呈现页面内容），下载尤其占用时间。因此可以把script元素放在body元素中的底部，这样页面呈现完后才开始涉及JavaScript，浏览器显示空白页的时间会缩短。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;head&gt;</div><div class="line">...</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">&lt;!-- 这里放内容... --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example1.js&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example2.js&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure></p>
-<p>script元素有2个和JavaScript加载顺序有关的属性：defer=”defer”表示立即下载脚本但等页面解析完再执行，async=”async”表示异步下载和执行脚本，脚本的下载和执行不会影响页面解析，由于异步其顺序无法确定，所以用async属性的脚本不能依赖其他脚本。</p>
-<p>浏览器在JavaScript被禁用时会显示noscript元素的内容。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">&lt;noscript&gt;</div><div class="line">&lt;p&gt;本页面需要启用JavaScript</div><div class="line">&lt;/noscript&gt;</div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure></p>
+                <p>JavaScript的引用类型类似Java的类库，提供很多方便快捷的方法</p>
+<h2 id="1-Object类型"><a href="#1-Object类型" class="headerlink" title="1.Object类型"></a>1.Object类型</h2><p>Object类型可以当其他编程语言的dictionary/map类型使用<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line">person[<span class="string">"first name"</span>]=<span class="string">"Huang"</span>;</div><div class="line">alert(person[<span class="string">"first name"</span>]);</div></pre></td></tr></table></figure></p>
+<h2 id="2-Array类型"><a href="#2-Array类型" class="headerlink" title="2.Array类型"></a>2.Array类型</h2><p>数组的长度：length</p>
+<p>栈方法：push（在<strong>数组末尾</strong>添加元素）、pop（在<strong>数组末尾</strong>移除元素）</p>
+<p>队列方法：push、shift（在<strong>数组前端</strong>移除元素）</p>
+<p>排序：sort、reverse（反转数组）</p>
+<p>操作数组：concat（连接数组）、slice（提取子数组，不会影响原数组），splice（直接修改原数组，功能很强大，最多可以有3种参数：起始位置、删除项数和插入的元素）</p>
+<p>查找：indexOf和lastIndexOf（反向查找），查找使用严格相等（ === ），找不到返回-1</p>
+<p>迭代：every（测试结果全是true）、some（测试结果至少一个true）、forEach、map（y=f(x)，返回y的集合）、filter（返回通过测试的元素集合）</p>
+<p>缩小数组：reduce（从左到右，比如求数组的累加或累乘）、reduceRight（从右到左）</p>
+<h2 id="3-Date类型"><a href="#3-Date类型" class="headerlink" title="3.Date类型"></a>3.Date类型</h2><p>Date类型没有提供格式化的方法，但提供了许多获取日期/时间组件的方法，所以要自己拼凑字符串（网上有自己实现format方法的源码）。Date中许多方法是从0开始的，比如月份、星期和小时等。</p>
+<h2 id="4-RegExp类型"><a href="#4-RegExp类型" class="headerlink" title="4.RegExp类型"></a>4.RegExp类型</h2><p>var exp = / pattern / flags;</p>
+<p>flag包括g（全局匹配，会记住当前匹配的位置）、i（不区分大小写）和m（多行模式）</p>
+<p>主要方法test()和exec()，test()返回一个布尔值，exec()每次返回一个匹配项(由多个捕获组组成)，全局匹配模式下可以多次调用查找下一个匹配项。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> text=<span class="string">"mon and dad and baby"</span>;</div><div class="line"><span class="keyword">var</span> pattern=<span class="regexp">/mon( and dad( and baby)?)?/gi</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> matches=pattern.exec(text);</div><div class="line">alert(matches.index);      <span class="comment">// 起始位置，0</span></div><div class="line">alert(matches.input);      <span class="comment">// 输入，"mon and dad and baby"</span></div><div class="line">alert(matches[<span class="number">0</span>]);         <span class="comment">// 匹配项，"mon and dad and baby"</span></div><div class="line">alert(matches[<span class="number">1</span>]);         <span class="comment">// 捕获组1，" and dad and baby"</span></div><div class="line">alert(matches[<span class="number">2</span>]);         <span class="comment">// 捕获组2，" and baby"</span></div></pre></td></tr></table></figure></p>
+<h2 id="5-Function类型"><a href="#5-Function类型" class="headerlink" title="5.Function类型"></a>5.Function类型</h2><p>见另一篇文章《JavaScript的函数》</p>
+<h2 id="6-Boolean类型"><a href="#6-Boolean类型" class="headerlink" title="6.Boolean类型"></a>6.Boolean类型</h2><p>基本类型不是引用类型，所以我们不能直接在布尔值、数值和字符串上调用属性或方法，JavaScript提供了3种对基本类型的引用封装，方便我们平时操作。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> trueObject=<span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">true</span>);</div></pre></td></tr></table></figure></p>
+<h2 id="7-Number类型"><a href="#7-Number类型" class="headerlink" title="7.Number类型"></a>7.Number类型</h2><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> numObject=<span class="keyword">new</span> <span class="built_in">Number</span>(<span class="number">10</span>);</div><div class="line">alert(numObject.toFixed(<span class="number">2</span>)); <span class="comment">// 10.00</span></div><div class="line">alert(numObject.toString(<span class="number">2</span>)); <span class="comment">// 1010</span></div></pre></td></tr></table></figure>
+<h2 id="8-String类型"><a href="#8-String类型" class="headerlink" title="8.String类型"></a>8.String类型</h2><p>String类型的属性和方法可以直接在字符串上使用，大概是字符串的操作太频繁了。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> strObject=<span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">"hello world"</span>);</div></pre></td></tr></table></figure></p>
+<p>String类型有许多方法，Array类型的方法在String上基本都能找到。</p>
+<h2 id="9-Global对象（单例）"><a href="#9-Global对象（单例）" class="headerlink" title="9.Global对象（单例）"></a>9.Global对象（单例）</h2><p>isNaN, parseInt, eval（ECMAScript中最强大的方法）, encodeURI等。</p>
+<h2 id="10-Math对象（单例）"><a href="#10-Math对象（单例）" class="headerlink" title="10.Math对象（单例）"></a>10.Math对象（单例）</h2><p>Math.E, Math.PI, min, max, ceil, floor, round等。</p>
 
                 <hr>
                 
                 <!-- 多说 Share start -->
                 <div class="ds-share"
                      style="text-align: right"
-                     data-thread-key="2016/09/25/using-javascript-in-html/"
-                     data-title="在HTML中引入JavaScript"
-                     data-url="http://coderkim.tech/2016/09/25/using-javascript-in-html/"
+                     data-thread-key="2016/09/25/reference-type-of-javascript/"
+                     data-title="JavaScript的引用类型"
+                     data-url="http://coderkim.tech/2016/09/25/reference-type-of-javascript/"
                      data-images=""
-                     data-content="在HTML中引入JavaScript使用script元素，分为嵌入代码和外部文件代码2种，嵌入... | CoderKim&#39;s blog ">
+                     data-content="JavaScript的引用类型类似Java的类库，提供很多方便快捷的方法
+1.Object类型... | CoderKim&#39;s blog ">
                     <div class="ds-share-inline">
                         <ul class="ds-share-icons-16">
                             <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
@@ -197,14 +215,14 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2016/09/25/using-JSONP-to-solve-AJAX-cross-domain-problem/" data-toggle="tooltip" data-placement="top"
-                           title="使用JSONP解决AJAX跨域问题">&larr; Previous Post</a>
+                        <a href="/2016/09/25/javascript-boolean-and-equality-operators/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript的布尔和相等操作符">&larr; Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2016/09/23/composition-of-javascript-implementation/" data-toggle="tooltip" data-placement="top"
-                           title="JavaScript实现的组成">Next Post &rarr;</a>
+                        <a href="/2016/09/25/javascript-function/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript的函数">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -213,9 +231,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2016/09/25/using-javascript-in-html/"
-                         data-title="在HTML中引入JavaScript"
-                         data-url="http://coderkim.tech/2016/09/25/using-javascript-in-html/">
+                         data-thread-key="2016/09/25/reference-type-of-javascript/"
+                         data-title="JavaScript的引用类型"
+                         data-url="http://coderkim.tech/2016/09/25/reference-type-of-javascript/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -227,7 +245,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Object类型"><span class="toc-text">1.Object类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Array类型"><span class="toc-text">2.Array类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Date类型"><span class="toc-text">3.Date类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-RegExp类型"><span class="toc-text">4.RegExp类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Function类型"><span class="toc-text">5.Function类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Boolean类型"><span class="toc-text">6.Boolean类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-Number类型"><span class="toc-text">7.Number类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-String类型"><span class="toc-text">8.String类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-Global对象（单例）"><span class="toc-text">9.Global对象（单例）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-Math对象（单例）"><span class="toc-text">10.Math对象（单例）</span></a></li></ol>
                 </div>
             </div>
         </div>

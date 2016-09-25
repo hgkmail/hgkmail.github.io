@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        在HTML中引入JavaScript｜CoderKim&#39;s blog
+        JavaScript的布尔和相等操作符｜CoderKim&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://coderkim.tech/2016/09/25/using-javascript-in-html/">
+    <link rel="canonical" href="http://coderkim.tech/2016/09/25/javascript-boolean-and-equality-operators/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -136,7 +136,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>在HTML中引入JavaScript</h1>
+                    <h1>JavaScript的布尔和相等操作符</h1>
                     
                     <span class="meta">
                          作者 CoderKim
@@ -153,7 +153,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            在HTML中引入JavaScript
+            JavaScript的布尔和相等操作符
         </span>
     </div>
 </header>
@@ -164,21 +164,22 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>在HTML中引入JavaScript使用script元素，分为嵌入代码和外部文件代码2种，嵌入代码虽然没有什么问题，但不好维护，一般使用外部文件代码，它具有可维护和可缓存的优点。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;!-- 嵌入代码 --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">function sayHello() &#123;</div><div class="line">    alert(&quot;hello&quot;);</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;!-- 外部文件代码 --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example.js&quot;&gt;&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>按照惯例，script元素一般放在head元素中，如果有多个script元素，浏览器会按照顺序逐个下载和解析。放在head元素中有个缺点，就是必须等到全部的JavaScript下载、解析和执行完后才能呈现页面的内容（浏览器遇到body元素才开始呈现页面内容），下载尤其占用时间。因此可以把script元素放在body元素中的底部，这样页面呈现完后才开始涉及JavaScript，浏览器显示空白页的时间会缩短。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;head&gt;</div><div class="line">...</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">&lt;!-- 这里放内容... --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example1.js&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example2.js&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure></p>
-<p>script元素有2个和JavaScript加载顺序有关的属性：defer=”defer”表示立即下载脚本但等页面解析完再执行，async=”async”表示异步下载和执行脚本，脚本的下载和执行不会影响页面解析，由于异步其顺序无法确定，所以用async属性的脚本不能依赖其他脚本。</p>
-<p>浏览器在JavaScript被禁用时会显示noscript元素的内容。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">&lt;noscript&gt;</div><div class="line">&lt;p&gt;本页面需要启用JavaScript</div><div class="line">&lt;/noscript&gt;</div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure></p>
+                <p>布尔操作符和相等操作符是JavaScript中比较“内涵”的操作符，这里做一下备注。</p>
+<h2 id="1-逻辑与（-amp-amp-）"><a href="#1-逻辑与（-amp-amp-）" class="headerlink" title="1.逻辑与（&amp;&amp;）"></a>1.逻辑与（&amp;&amp;）</h2><p>逻辑与是一个短路操作，当第一个操作数相当于false（null，NaN，undefined）时，返回第一个操作数；当第一个操作数相当于true时，返回第二个操作数。我们可以看到，逻辑与<strong>返回的是一个操作数</strong>，而不是直接返回一个布尔值，利用这点，我们可以简化代码。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 当condition成立时才返回result</span></div><div class="line"><span class="keyword">var</span> value = condition &amp;&amp; result;</div></pre></td></tr></table></figure></p>
+<h2 id="2-逻辑或"><a href="#2-逻辑或" class="headerlink" title="2.逻辑或(||)"></a>2.逻辑或(||)</h2><p>逻辑或也是一个短路操作，当第一个操作数相当于true时，返回第一个操作数；当第一个操作数相当于false时，返回第二个操作数。和逻辑与类似，可以拿来简化代码。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// backupObject负责在preferredObject不包含有效值的情况下提供后备值</span></div><div class="line"><span class="keyword">var</span> value = preferredObject || backupObject;</div></pre></td></tr></table></figure></p>
+<h2 id="3-严格相等（-）"><a href="#3-严格相等（-）" class="headerlink" title="3.严格相等（ === ）"></a>3.严格相等（ === ）</h2><p>一般的相等（ == ）在比较时会进行类型转换，比如null == false是成立的，因为null转换为布尔值后就是false，相似的还有”” == false。如果需要在比较时不进行类型转换，就要用严格相等（ === ），它要求比较的操作数数据类型也要相同，所以null === false是不成立的。</p>
 
                 <hr>
                 
                 <!-- 多说 Share start -->
                 <div class="ds-share"
                      style="text-align: right"
-                     data-thread-key="2016/09/25/using-javascript-in-html/"
-                     data-title="在HTML中引入JavaScript"
-                     data-url="http://coderkim.tech/2016/09/25/using-javascript-in-html/"
+                     data-thread-key="2016/09/25/javascript-boolean-and-equality-operators/"
+                     data-title="JavaScript的布尔和相等操作符"
+                     data-url="http://coderkim.tech/2016/09/25/javascript-boolean-and-equality-operators/"
                      data-images=""
-                     data-content="在HTML中引入JavaScript使用script元素，分为嵌入代码和外部文件代码2种，嵌入... | CoderKim&#39;s blog ">
+                     data-content="布尔操作符和相等操作符是JavaScript中比较“内涵”的操作符，这里做一下备注。
+1.逻辑... | CoderKim&#39;s blog ">
                     <div class="ds-share-inline">
                         <ul class="ds-share-icons-16">
                             <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
@@ -197,14 +198,14 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2016/09/25/using-JSONP-to-solve-AJAX-cross-domain-problem/" data-toggle="tooltip" data-placement="top"
-                           title="使用JSONP解决AJAX跨域问题">&larr; Previous Post</a>
+                        <a href="/2016/09/25/creation-and-inheritance-of-objects-in-javascript/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript中对象的创建和继承">&larr; Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2016/09/23/composition-of-javascript-implementation/" data-toggle="tooltip" data-placement="top"
-                           title="JavaScript实现的组成">Next Post &rarr;</a>
+                        <a href="/2016/09/25/reference-type-of-javascript/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript的引用类型">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -213,9 +214,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2016/09/25/using-javascript-in-html/"
-                         data-title="在HTML中引入JavaScript"
-                         data-url="http://coderkim.tech/2016/09/25/using-javascript-in-html/">
+                         data-thread-key="2016/09/25/javascript-boolean-and-equality-operators/"
+                         data-title="JavaScript的布尔和相等操作符"
+                         data-url="http://coderkim.tech/2016/09/25/javascript-boolean-and-equality-operators/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -227,7 +228,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-逻辑与（-amp-amp-）"><span class="toc-text">1.逻辑与（&&）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-逻辑或"><span class="toc-text">2.逻辑或(||)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-严格相等（-）"><span class="toc-text">3.严格相等（ === ）</span></a></li></ol>
                 </div>
             </div>
         </div>
