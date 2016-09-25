@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        JavaScript实现的组成｜CoderKim&#39;s blog
+        JavaScript的引用类型｜CoderKim&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://coderkim.tech/2016/09/23/composition-of-javascript-implementation/">
+    <link rel="canonical" href="http://coderkim.tech/2016/09/10/reference-type-of-javascript/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -79,13 +79,13 @@
                     
                         
                         <li>
-                            <a href="/Tags/">Tags</a>
+                            <a href="/my-works/">my works</a>
                         </li>
                         
                     
                         
                         <li>
-                            <a href="/my-works/">my works</a>
+                            <a href="/Tags/">Tags</a>
                         </li>
                         
                     
@@ -148,12 +148,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>JavaScript实现的组成</h1>
+                    <h1>JavaScript的引用类型</h1>
                     
                     <span class="meta">
                          作者 CoderKim
                         <span>
-                          日期 2016-09-23
+                          日期 2016-09-10
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -168,7 +168,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            JavaScript实现的组成
+            JavaScript的引用类型
         </span>
     </div>
 </header>
@@ -179,25 +179,27 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>一个完整的JavaScript实现应该由下列三个不同的部分组成：</p>
-<ul>
-<li>核心（ECMAScript）</li>
-<li>文档对象模型（DOM）</li>
-<li>浏览器对象模型（BOM）</li>
-</ul>
-<h2 id="1-核心（ECMAScript）"><a href="#1-核心（ECMAScript）" class="headerlink" title="1. 核心（ECMAScript）"></a>1. 核心（ECMAScript）</h2><p>它是一种由ECMA国际（前身为欧洲计算机制造商协会）制定和发布的脚本语言规范，JavaScript实现了ECMAScript，Adobe ActionScript同样也实现了ECMAScript。ECMAScript第六版已经于2015年发布，某些浏览器已经开始支持ES6了，ES6的浏览器支持情况可以在<a href="http://kangax.github.io/compat-table/es6/" target="_blank" rel="external">这里</a>查看。</p>
-<h2 id="2-文档对象模型（DOM）"><a href="#2-文档对象模型（DOM）" class="headerlink" title="2. 文档对象模型（DOM）"></a>2. 文档对象模型（DOM）</h2><p>它是针对XML但经过扩展用于HTML的应用编程接口，它把整个页面映射为一个多层节点结构。比如下图：<img src="http://7xpq1f.com1.z0.glb.clouddn.com/1342618354_6087.jpg" alt="DOM例子"></p>
-<p>DOM分为3个level，DOM Level 1的目标主要是映射文档的结构，DOM Level 2引入了视图（DOM Views）、事件（DOM Events）、样式（DOM Style）和遍历（DOM Traversal and Range）等，DOM Level 3引入XPath等高级扩展。</p>
-<h2 id="3-浏览器对象模型（BOM）"><a href="#3-浏览器对象模型（BOM）" class="headerlink" title="3. 浏览器对象模型（BOM）"></a>3. 浏览器对象模型（BOM）</h2><p>它是针对浏览器的JavaScript扩展，只处理浏览器的窗口和框架，一开始没有统一的标准，HTML5后BOM开始建立正式的规范。BOM的结构一般如下图：<img src="http://7xpq1f.com1.z0.glb.clouddn.com/browser_objects.png" alt="BOM的结构"></p>
-<p>frames[]表示窗口中所有命名的框架，history对象包含用户（在浏览器窗口中）访问过的 URL，location对象包含有关当前URL的信息，比如主机名和端口号，navigator对象包含有关浏览器的信息，screen对象包含有关客户端显示屏幕的信息。</p>
-<p>window对象是BOM的顶层对象，其他BOM对象都是通过它延伸出来的，即window的子对象。由于window是顶层对象，因此调用它的子对象时可以不显式指明window对象。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">// 下面两行代码是一样的</div><div class="line">document.write(&quot;hello&quot;);</div><div class="line">window.document.write(&quot;hello&quot;);</div></pre></td></tr></table></figure></p>
-<p>参考：</p>
-<ul>
-<li><a href="http://www.dreamdu.com/javascript/what_is_bom/" target="_blank" rel="external">什么是BOM</a></li>
-<li><a href="http://blog.csdn.net/ghsau/article/details/7760826" target="_blank" rel="external">HTML DOM(一)：认识DOM</a></li>
-<li><a href="https://www.amazon.cn/dp/B007OQQVMY/ref=cm_sw_r_si_2_dp_ipuYxbGXN2PP7" target="_blank" rel="external">《JavaScript高级程序设计》</a></li>
-<li><a href="http://www.jianshu.com/p/b6d76160889d" target="_blank" rel="external">ECMAScript5和ECMAScript6的新特性及浏览器支持情况</a></li>
-</ul>
+                <p>JavaScript的引用类型类似Java的类库，提供很多方便快捷的方法</p>
+<h2 id="1-Object类型"><a href="#1-Object类型" class="headerlink" title="1.Object类型"></a>1.Object类型</h2><p>Object类型可以当其他编程语言的dictionary/map类型使用<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line">person[<span class="string">"first name"</span>]=<span class="string">"Huang"</span>;</div><div class="line">alert(person[<span class="string">"first name"</span>]);</div></pre></td></tr></table></figure></p>
+<h2 id="2-Array类型"><a href="#2-Array类型" class="headerlink" title="2.Array类型"></a>2.Array类型</h2><p>数组的长度：length</p>
+<p>栈方法：push（在<strong>数组末尾</strong>添加元素）、pop（在<strong>数组末尾</strong>移除元素）</p>
+<p>队列方法：push、shift（在<strong>数组前端</strong>移除元素）</p>
+<p>排序：sort、reverse（反转数组）</p>
+<p>操作数组：concat（连接数组）、slice（提取子数组，不会影响原数组），splice（直接修改原数组，功能很强大，最多可以有3种参数：起始位置、删除项数和插入的元素）</p>
+<p>查找：indexOf和lastIndexOf（反向查找），查找使用严格相等（ === ），找不到返回-1</p>
+<p>迭代：every（测试结果全是true）、some（测试结果至少一个true）、forEach、map（y=f(x)，返回y的集合）、filter（返回通过测试的元素集合）</p>
+<p>缩小数组：reduce（从左到右，比如求数组的累加或累乘）、reduceRight（从右到左）</p>
+<h2 id="3-Date类型"><a href="#3-Date类型" class="headerlink" title="3.Date类型"></a>3.Date类型</h2><p>Date类型没有提供格式化的方法，但提供了许多获取日期/时间组件的方法，所以要自己拼凑字符串（网上有自己实现format方法的源码）。Date中许多方法是从0开始的，比如月份、星期和小时等。</p>
+<h2 id="4-RegExp类型"><a href="#4-RegExp类型" class="headerlink" title="4.RegExp类型"></a>4.RegExp类型</h2><p>var exp = / pattern / flags;</p>
+<p>flag包括g（全局匹配，会记住当前匹配的位置）、i（不区分大小写）和m（多行模式）</p>
+<p>主要方法test()和exec()，test()返回一个布尔值，exec()每次返回一个匹配项(由多个捕获组组成)，全局匹配模式下可以多次调用查找下一个匹配项。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> text=<span class="string">"mon and dad and baby"</span>;</div><div class="line"><span class="keyword">var</span> pattern=<span class="regexp">/mon( and dad( and baby)?)?/gi</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> matches=pattern.exec(text);</div><div class="line">alert(matches.index);      <span class="comment">// 起始位置，0</span></div><div class="line">alert(matches.input);      <span class="comment">// 输入，"mon and dad and baby"</span></div><div class="line">alert(matches[<span class="number">0</span>]);         <span class="comment">// 匹配项，"mon and dad and baby"</span></div><div class="line">alert(matches[<span class="number">1</span>]);         <span class="comment">// 捕获组1，" and dad and baby"</span></div><div class="line">alert(matches[<span class="number">2</span>]);         <span class="comment">// 捕获组2，" and baby"</span></div></pre></td></tr></table></figure></p>
+<h2 id="5-Function类型"><a href="#5-Function类型" class="headerlink" title="5.Function类型"></a>5.Function类型</h2><p>见另一篇文章《JavaScript的函数》</p>
+<h2 id="6-Boolean类型"><a href="#6-Boolean类型" class="headerlink" title="6.Boolean类型"></a>6.Boolean类型</h2><p>基本类型不是引用类型，所以我们不能直接在布尔值、数值和字符串上调用属性或方法，JavaScript提供了3种对基本类型的引用封装，方便我们平时操作。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> trueObject=<span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">true</span>);</div></pre></td></tr></table></figure></p>
+<h2 id="7-Number类型"><a href="#7-Number类型" class="headerlink" title="7.Number类型"></a>7.Number类型</h2><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> numObject=<span class="keyword">new</span> <span class="built_in">Number</span>(<span class="number">10</span>);</div><div class="line">alert(numObject.toFixed(<span class="number">2</span>)); <span class="comment">// 10.00</span></div><div class="line">alert(numObject.toString(<span class="number">2</span>)); <span class="comment">// 1010</span></div></pre></td></tr></table></figure>
+<h2 id="8-String类型"><a href="#8-String类型" class="headerlink" title="8.String类型"></a>8.String类型</h2><p>String类型的属性和方法可以直接在字符串上使用，大概是字符串的操作太频繁了。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> strObject=<span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">"hello world"</span>);</div></pre></td></tr></table></figure></p>
+<p>String类型有许多方法，Array类型的方法在String上基本都能找到。</p>
+<h2 id="9-Global对象（单例）"><a href="#9-Global对象（单例）" class="headerlink" title="9.Global对象（单例）"></a>9.Global对象（单例）</h2><p>isNaN, parseInt, eval（ECMAScript中最强大的方法）, encodeURI等。</p>
+<h2 id="10-Math对象（单例）"><a href="#10-Math对象（单例）" class="headerlink" title="10.Math对象（单例）"></a>10.Math对象（单例）</h2><p>Math.E, Math.PI, min, max, ceil, floor, round等。</p>
 
                 <hr>
                 
@@ -205,10 +207,15 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2016/09/25/using-javascript-in-html/" data-toggle="tooltip" data-placement="top"
-                           title="在HTML中引入JavaScript">&larr; Previous Post</a>
+                        <a href="/2016/09/11/javascript-boolean-and-equality-operators/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript的布尔和相等操作符">&larr; Previous Post</a>
                     </li>
                     
+                    
+                    <li class="next">
+                        <a href="/2016/09/03/javascript-function/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript的函数">Next Post &rarr;</a>
+                    </li>
                     
                 </ul>
 
@@ -216,9 +223,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2016/09/23/composition-of-javascript-implementation/"
-                         data-title="JavaScript实现的组成"
-                         data-url="http://coderkim.tech/2016/09/23/composition-of-javascript-implementation/">
+                         data-thread-key="2016/09/10/reference-type-of-javascript/"
+                         data-title="JavaScript的引用类型"
+                         data-url="http://coderkim.tech/2016/09/10/reference-type-of-javascript/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -230,7 +237,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-核心（ECMAScript）"><span class="toc-text">1. 核心（ECMAScript）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-文档对象模型（DOM）"><span class="toc-text">2. 文档对象模型（DOM）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-浏览器对象模型（BOM）"><span class="toc-text">3. 浏览器对象模型（BOM）</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Object类型"><span class="toc-text">1.Object类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Array类型"><span class="toc-text">2.Array类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Date类型"><span class="toc-text">3.Date类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-RegExp类型"><span class="toc-text">4.RegExp类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Function类型"><span class="toc-text">5.Function类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Boolean类型"><span class="toc-text">6.Boolean类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-Number类型"><span class="toc-text">7.Number类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-String类型"><span class="toc-text">8.String类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-Global对象（单例）"><span class="toc-text">9.Global对象（单例）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-Math对象（单例）"><span class="toc-text">10.Math对象（单例）</span></a></li></ol>
                 </div>
             </div>
         </div>

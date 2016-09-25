@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        JavaScript中对象的创建和继承｜CoderKim&#39;s blog
+        JavaScript实现的组成｜CoderKim&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://coderkim.tech/2016/09/25/creation-and-inheritance-of-objects-in-javascript/">
+    <link rel="canonical" href="http://coderkim.tech/2016/08/10/composition-of-javascript-implementation/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -79,13 +79,13 @@
                     
                         
                         <li>
-                            <a href="/Tags/">Tags</a>
+                            <a href="/my-works/">my works</a>
                         </li>
                         
                     
                         
                         <li>
-                            <a href="/my-works/">my works</a>
+                            <a href="/Tags/">Tags</a>
                         </li>
                         
                     
@@ -148,12 +148,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>JavaScript中对象的创建和继承</h1>
+                    <h1>JavaScript实现的组成</h1>
                     
                     <span class="meta">
                          作者 CoderKim
                         <span>
-                          日期 2016-09-25
+                          日期 2016-08-10
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -168,7 +168,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            JavaScript中对象的创建和继承
+            JavaScript实现的组成
         </span>
     </div>
 </header>
@@ -179,18 +179,25 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>对象的创建和继承是面向对象语言中最常见的事情，一般的面向对象语言都有类的概念，而JavaScript没有，所以JavaScript比较特别。在JavaScript中，对象是一种引用类型，对象的继承是基于原型（prototype）的。</p>
-<h2 id="1-对象的属性"><a href="#1-对象的属性" class="headerlink" title="1.对象的属性"></a>1.对象的属性</h2><p>在JavaScript中，除了用key/value的形式定义属性，还有一种比较正规的方式——Object.defineProperty。属性可以细分为<strong>数据属性</strong>和<strong>访问器属性</strong>。</p>
-<p>Object.defineProperty方式可以设置<strong>数据属性</strong>的4个特征：configurable（属性是否可以用delete删除）、enumerable（属性是否可以用for-in枚举）、writable（属性是否可写）和value（属性的值，默认是undefined）。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> person=<span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line"><span class="comment">// 定义了一个只读属性name</span></div><div class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">"name"</span>, &#123;</div><div class="line">    <span class="attr">writable</span>: <span class="literal">false</span>,</div><div class="line">    <span class="attr">value</span>: <span class="string">"Tom"</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>Object.defineProperty方式也可以设置<strong>访问器属性</strong>的4个特征：configurable（属性是否可以用delete删除）、enumerable（属性是否可以用for-in枚举）、get（读取属性时调用的函数，默认undefined）和set（写入属性时调用的函数，默认undefined）。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> book=&#123;</div><div class="line">    <span class="attr">_year</span>: <span class="number">2016</span></div><div class="line">&#125;;</div><div class="line"><span class="built_in">Object</span>.defineProperty(book, <span class="string">"year"</span>, &#123;</div><div class="line">    <span class="attr">get</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>._year;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">set</span>: <span class="function"><span class="keyword">function</span>(<span class="params">newValue</span>) </span>&#123;</div><div class="line">        <span class="keyword">this</span>._year=newValue;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>IE8是第一个支持Object.defineProperty的浏览器，不过IE8是部分实现，IE9+才全部实现。</p>
-<p>定义多个属性：Object.defineProperties()</p>
-<p>读取属性的特征：Object.getOwnPropertyDescriptor()</p>
-<h2 id="2-对象的创建"><a href="#2-对象的创建" class="headerlink" title="2.对象的创建"></a>2.对象的创建</h2><p>在JavaScript中，对象的创建有多种模式，有优点也有缺点，这里只描述下使用最广泛、认同度最高的一种创建模式——组合使用构造函数模式和原型模式。这种模式一般在构造函数中添加对象独有的属性，在原型中添加对象共享的函数。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 在构造函数中添加对象独有的属性</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name=name;</div><div class="line">    <span class="keyword">this</span>.age=age;</div><div class="line">    <span class="keyword">this</span>.friends=[<span class="string">"Tom"</span>, <span class="string">"Mary"</span>];</div><div class="line">&#125;</div><div class="line"><span class="comment">// 在原型中添加对象共享的函数</span></div><div class="line">Person.prototype=&#123;</div><div class="line">    <span class="attr">constructor</span>: Person,</div><div class="line">    <span class="attr">sayName</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        alert(<span class="keyword">this</span>.name);</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1=<span class="keyword">new</span> Person(<span class="string">"LiLei"</span>, <span class="number">20</span>);</div><div class="line"><span class="keyword">var</span> person2=<span class="keyword">new</span> Person(<span class="string">"Jenny"</span>, <span class="number">18</span>);</div></pre></td></tr></table></figure></p>
-<p>之所以这么做，是因为构造函数模式中添加的属性和函数都是每个对象一份（独有）的，这对函数来说是浪费内存的，同一类型的对象共用一个函数就可以了；而原型模式中添加的属性和函数是每个对象都共享的，这对引用类型的属性来说会引起混淆。综合两种模式的优点和缺点，得到这种所谓的组合使用构造函数模式和原型模式。</p>
-<p>有些程序员喜欢把原型的创建放在构造函数里面，原型只需要创建一遍，产生一种所谓的动态原型模式。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 在构造函数中添加对象独有的属性</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name=name;</div><div class="line">    <span class="keyword">this</span>.age=age;</div><div class="line">    <span class="keyword">this</span>.friends=[<span class="string">"Tom"</span>, <span class="string">"Mary"</span>];</div><div class="line">    </div><div class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> <span class="keyword">this</span>.sayName != <span class="string">"function"</span>) &#123;</div><div class="line">        <span class="comment">// 在原型中添加对象共享的函数</span></div><div class="line">        Person.prototype=&#123;</div><div class="line">            <span class="attr">constructor</span>: Person,</div><div class="line">            <span class="attr">sayName</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">                alert(<span class="keyword">this</span>.name);</div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1=<span class="keyword">new</span> Person(<span class="string">"LiLei"</span>, <span class="number">20</span>);</div><div class="line"><span class="keyword">var</span> person2=<span class="keyword">new</span> Person(<span class="string">"Jenny"</span>, <span class="number">18</span>);</div></pre></td></tr></table></figure></p>
-<h2 id="3-对象的继承"><a href="#3-对象的继承" class="headerlink" title="3.对象的继承"></a>3.对象的继承</h2><p>在JavaScript中，对象的继承也有多种模式，这里只描述开发人员普遍认为是最理想的继承范式——寄生组合式继承，YUI的YAHOO.lang.extend()和Backbone.extend()都采用了这种继承。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 父类型</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">SuperType</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name=<span class="string">"Tom"</span>;</div><div class="line">    <span class="keyword">this</span>.friends=[<span class="string">"Mary"</span>, <span class="string">"Mike"</span>];</div><div class="line">&#125;</div><div class="line"></div><div class="line">SuperType.prototype=&#123;</div><div class="line">    <span class="attr">constructor</span>: SuperType,</div><div class="line">    <span class="attr">sayName</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        alert(<span class="keyword">this</span>.name);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 子类型</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">SubType</span>(<span class="params">name, age</span>) </span>&#123;</div><div class="line">    <span class="comment">// 调用父类的构造函数，继承每个对象都有一份的属性</span></div><div class="line">    SuperType.call(<span class="keyword">this</span>, name);</div><div class="line">    <span class="keyword">this</span>.age=age;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 利用Object.create()继承原型，SubType.prototype的原型会指向SuperType.prototype</span></div><div class="line">SubType.prototype=<span class="built_in">Object</span>.create(SuperType.prototype);</div><div class="line"><span class="comment">// 指定新的构造函数</span></div><div class="line">SubType.prototype.constructor=SubType;</div><div class="line"><span class="comment">// 添加一些子类的方法</span></div><div class="line">SubType.prototype.sayAge=<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    alert(<span class="keyword">this</span>.age);</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
-<p>其中的Object.create()做了什么呢？它仅仅是把SubType.prototype的原型指向SuperType.prototype，建立一条原型链。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="built_in">Object</span>.create = <span class="function"><span class="keyword">function</span>(<span class="params">o</span>) </span>&#123;</div><div class="line">    <span class="comment">// 定义一个空的构造函数</span></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>) </span>&#123;&#125;</div><div class="line">    F.prototype=o;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> F();</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+                <p>一个完整的JavaScript实现应该由下列三个不同的部分组成：</p>
+<ul>
+<li>核心（ECMAScript）</li>
+<li>文档对象模型（DOM）</li>
+<li>浏览器对象模型（BOM）</li>
+</ul>
+<h2 id="1-核心（ECMAScript）"><a href="#1-核心（ECMAScript）" class="headerlink" title="1. 核心（ECMAScript）"></a>1. 核心（ECMAScript）</h2><p>它是一种由ECMA国际（前身为欧洲计算机制造商协会）制定和发布的脚本语言规范，JavaScript实现了ECMAScript，Adobe ActionScript同样也实现了ECMAScript。ECMAScript第六版已经于2015年发布，某些浏览器已经开始支持ES6了，ES6的浏览器支持情况可以在<a href="http://kangax.github.io/compat-table/es6/" target="_blank" rel="external">这里</a>查看。</p>
+<h2 id="2-文档对象模型（DOM）"><a href="#2-文档对象模型（DOM）" class="headerlink" title="2. 文档对象模型（DOM）"></a>2. 文档对象模型（DOM）</h2><p>它是针对XML但经过扩展用于HTML的应用编程接口，它把整个页面映射为一个多层节点结构。比如下图：<img src="http://7xpq1f.com1.z0.glb.clouddn.com/1342618354_6087.jpg" alt="DOM例子"></p>
+<p>DOM分为3个level，DOM Level 1的目标主要是映射文档的结构，DOM Level 2引入了视图（DOM Views）、事件（DOM Events）、样式（DOM Style）和遍历（DOM Traversal and Range）等，DOM Level 3引入XPath等高级扩展。</p>
+<h2 id="3-浏览器对象模型（BOM）"><a href="#3-浏览器对象模型（BOM）" class="headerlink" title="3. 浏览器对象模型（BOM）"></a>3. 浏览器对象模型（BOM）</h2><p>它是针对浏览器的JavaScript扩展，只处理浏览器的窗口和框架，一开始没有统一的标准，HTML5后BOM开始建立正式的规范。BOM的结构一般如下图：<img src="http://7xpq1f.com1.z0.glb.clouddn.com/browser_objects.png" alt="BOM的结构"></p>
+<p>frames[]表示窗口中所有命名的框架，history对象包含用户（在浏览器窗口中）访问过的 URL，location对象包含有关当前URL的信息，比如主机名和端口号，navigator对象包含有关浏览器的信息，screen对象包含有关客户端显示屏幕的信息。</p>
+<p>window对象是BOM的顶层对象，其他BOM对象都是通过它延伸出来的，即window的子对象。由于window是顶层对象，因此调用它的子对象时可以不显式指明window对象。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">// 下面两行代码是一样的</div><div class="line">document.write(&quot;hello&quot;);</div><div class="line">window.document.write(&quot;hello&quot;);</div></pre></td></tr></table></figure></p>
+<p>参考：</p>
+<ul>
+<li><a href="http://www.dreamdu.com/javascript/what_is_bom/" target="_blank" rel="external">什么是BOM</a></li>
+<li><a href="http://blog.csdn.net/ghsau/article/details/7760826" target="_blank" rel="external">HTML DOM(一)：认识DOM</a></li>
+<li><a href="https://www.amazon.cn/dp/B007OQQVMY/ref=cm_sw_r_si_2_dp_ipuYxbGXN2PP7" target="_blank" rel="external">《JavaScript高级程序设计》</a></li>
+<li><a href="http://www.jianshu.com/p/b6d76160889d" target="_blank" rel="external">ECMAScript5和ECMAScript6的新特性及浏览器支持情况</a></li>
+</ul>
 
                 <hr>
                 
@@ -198,15 +205,10 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2016/09/25/javascript-closure/" data-toggle="tooltip" data-placement="top"
-                           title="JavaScript的闭包">&larr; Previous Post</a>
+                        <a href="/2016/08/12/using-javascript-in-html/" data-toggle="tooltip" data-placement="top"
+                           title="在HTML中引入JavaScript">&larr; Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2016/09/25/javascript-boolean-and-equality-operators/" data-toggle="tooltip" data-placement="top"
-                           title="JavaScript的布尔和相等操作符">Next Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
@@ -214,9 +216,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2016/09/25/creation-and-inheritance-of-objects-in-javascript/"
-                         data-title="JavaScript中对象的创建和继承"
-                         data-url="http://coderkim.tech/2016/09/25/creation-and-inheritance-of-objects-in-javascript/">
+                         data-thread-key="2016/08/10/composition-of-javascript-implementation/"
+                         data-title="JavaScript实现的组成"
+                         data-url="http://coderkim.tech/2016/08/10/composition-of-javascript-implementation/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -228,7 +230,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-对象的属性"><span class="toc-text">1.对象的属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-对象的创建"><span class="toc-text">2.对象的创建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-对象的继承"><span class="toc-text">3.对象的继承</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-核心（ECMAScript）"><span class="toc-text">1. 核心（ECMAScript）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-文档对象模型（DOM）"><span class="toc-text">2. 文档对象模型（DOM）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-浏览器对象模型（BOM）"><span class="toc-text">3. 浏览器对象模型（BOM）</span></a></li></ol>
                 </div>
             </div>
         </div>

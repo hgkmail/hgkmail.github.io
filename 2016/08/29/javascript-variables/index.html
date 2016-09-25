@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        JavaScript的布尔和相等操作符｜CoderKim&#39;s blog
+        JavaScript的变量｜CoderKim&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://coderkim.tech/2016/09/25/javascript-boolean-and-equality-operators/">
+    <link rel="canonical" href="http://coderkim.tech/2016/08/29/javascript-variables/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -79,13 +79,13 @@
                     
                         
                         <li>
-                            <a href="/Tags/">Tags</a>
+                            <a href="/my-works/">my works</a>
                         </li>
                         
                     
                         
                         <li>
-                            <a href="/my-works/">my works</a>
+                            <a href="/Tags/">Tags</a>
                         </li>
                         
                     
@@ -148,12 +148,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>JavaScript的布尔和相等操作符</h1>
+                    <h1>JavaScript的变量</h1>
                     
                     <span class="meta">
                          作者 CoderKim
                         <span>
-                          日期 2016-09-25
+                          日期 2016-08-29
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -168,7 +168,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            JavaScript的布尔和相等操作符
+            JavaScript的变量
         </span>
     </div>
 </header>
@@ -179,10 +179,26 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>布尔操作符和相等操作符是JavaScript中比较“内涵”的操作符，这里做一下备注。</p>
-<h2 id="1-逻辑与（-amp-amp-）"><a href="#1-逻辑与（-amp-amp-）" class="headerlink" title="1.逻辑与（&amp;&amp;）"></a>1.逻辑与（&amp;&amp;）</h2><p>逻辑与是一个短路操作，当第一个操作数相当于false（null，NaN，undefined）时，返回第一个操作数；当第一个操作数相当于true时，返回第二个操作数。我们可以看到，逻辑与<strong>返回的是一个操作数</strong>，而不是直接返回一个布尔值，利用这点，我们可以简化代码。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 当condition成立时才返回result</span></div><div class="line"><span class="keyword">var</span> value = condition &amp;&amp; result;</div></pre></td></tr></table></figure></p>
-<h2 id="2-逻辑或"><a href="#2-逻辑或" class="headerlink" title="2.逻辑或(||)"></a>2.逻辑或(||)</h2><p>逻辑或也是一个短路操作，当第一个操作数相当于true时，返回第一个操作数；当第一个操作数相当于false时，返回第二个操作数。和逻辑与类似，可以拿来简化代码。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// backupObject负责在preferredObject不包含有效值的情况下提供后备值</span></div><div class="line"><span class="keyword">var</span> value = preferredObject || backupObject;</div></pre></td></tr></table></figure></p>
-<h2 id="3-严格相等（-）"><a href="#3-严格相等（-）" class="headerlink" title="3.严格相等（ === ）"></a>3.严格相等（ === ）</h2><p>一般的相等（ == ）在比较时会进行类型转换，比如null == false是成立的，因为null转换为布尔值后就是false，相似的还有”” == false。如果需要在比较时不进行类型转换，就要用严格相等（ === ），它要求比较的操作数数据类型也要相同，所以null === false是不成立的。</p>
+                <p>ECMAScript的变量是松散类型的，可以用来保存任意类型的数据，换句话说，每个变量只是一个保存值的占位符。变量名可以用美元符号$。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">var message=&quot;hello&quot;;  // 先是字符串类型</div><div class="line">message=100;          // 然后是数值类型</div></pre></td></tr></table></figure></p>
+<h2 id="1-全局变量和局部变量"><a href="#1-全局变量和局部变量" class="headerlink" title="1.全局变量和局部变量"></a>1.全局变量和局部变量</h2><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">function test1() &#123;</div><div class="line">    var n=1; // 局部变量，前面有var</div><div class="line">&#125;</div><div class="line"></div><div class="line">function test2() &#123;</div><div class="line">    m=&quot;hello&quot;; // 全局变量，前面无var</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="2-变量类型操作符"><a href="#2-变量类型操作符" class="headerlink" title="2.变量类型操作符"></a>2.变量类型操作符</h2><p>因为ECMAScript的变量是松散类型的，所以需要一种手段来检测变量的类型——typeof，使用typeof会返回一个字符串来代表类型：undefined（变量未定义或变量类型未指定），boolean，string，number，object（对象或null）和function（函数，其实函数也是对象）。</p>
+<h2 id="3-变量的类型"><a href="#3-变量的类型" class="headerlink" title="3.变量的类型"></a>3.变量的类型</h2><p>ECMAScript只有6种数据类型，5种简单类型Undefined、Null、Boolean、Number和String，1种复杂类型Object，Object本质是一组无序的key/value对。</p>
+<p><strong>Undefined</strong>类型只有一个值undefined，使用var定义变量但<strong>未初始化/未指定变量的类型</strong>时，变量的值就是undefined。如果是变量未定义，则会产生错误。所以undefined是未定义类型，而不是未定义变量。不过typeof对变量未定义和未初始化都返回undefined。</p>
+<p><strong>Null</strong>类型只有一个值null，表示空对象，typeof null会返回object。undefined是派生自null的，所以undefined == null会返回true，不过它们的用途不一样，undefined表示变量未初始化，null表示变量是空对象。</p>
+<p><strong>Boolean</strong>类型有2个值true和false，它们和1、0并无关系，但可以转化。<br>数据类型 | 转化为true | 转化为false<br>—|—|—<br>String | 非空字符串 | 空字符串<br>Number | 非零（包括无穷大） | 0或NaN<br>Object | 任何非空对象 | null</p>
+<p><strong>Number</strong>类型既可以表示整数，也可以表示浮点数，浮点数会产生舍入误差，比如0.1+0.2=0.3000000000004。数值范围Number.MAX_VALUE和Number.MIN_VALUE。isNaN()用来判断是不是NaN（Not a Number）。把String转化为Number一般用parseInt()或者parseFloat()，用Number()会存在不确定性。</p>
+<p><strong>String</strong>类型表示字符串，把其他类型转化为字符串一般使用方法toString()。</p>
+<p><strong>Object</strong>类型表示对象，object的每个实例都具有下列的属性和方法：</p>
+<ul>
+<li>constructor：创建当前对象的函数。</li>
+<li>hasOwnProperty(propertyName)：用于检查指定的属性是否在当前实例中，而不是在实例的原型中。</li>
+<li>isPrototypeOf(object)：当前对象是否是另一个对象的原型。</li>
+<li>propertyIsEnumerable(propertyName)：属性是否能够用for-in语句枚举</li>
+<li>toLocalString()</li>
+<li>toString()</li>
+<li>valueOf()：返回对象的基本类型表示，通常与toString()相同。<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">var boo = new Boolean(false)</div><div class="line">document.write(boo.valueOf()) // 输出false</div></pre></td></tr></table></figure>
+</li>
+</ul>
 
                 <hr>
                 
@@ -190,14 +206,14 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2016/09/25/creation-and-inheritance-of-objects-in-javascript/" data-toggle="tooltip" data-placement="top"
-                           title="JavaScript中对象的创建和继承">&larr; Previous Post</a>
+                        <a href="/2016/09/03/javascript-function/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript的函数">&larr; Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2016/09/25/reference-type-of-javascript/" data-toggle="tooltip" data-placement="top"
-                           title="JavaScript的引用类型">Next Post &rarr;</a>
+                        <a href="/2016/08/20/using-JSONP-to-solve-AJAX-cross-domain-problem/" data-toggle="tooltip" data-placement="top"
+                           title="使用JSONP解决AJAX跨域问题">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -206,9 +222,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2016/09/25/javascript-boolean-and-equality-operators/"
-                         data-title="JavaScript的布尔和相等操作符"
-                         data-url="http://coderkim.tech/2016/09/25/javascript-boolean-and-equality-operators/">
+                         data-thread-key="2016/08/29/javascript-variables/"
+                         data-title="JavaScript的变量"
+                         data-url="http://coderkim.tech/2016/08/29/javascript-variables/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -220,7 +236,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-逻辑与（-amp-amp-）"><span class="toc-text">1.逻辑与（&&）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-逻辑或"><span class="toc-text">2.逻辑或(||)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-严格相等（-）"><span class="toc-text">3.严格相等（ === ）</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-全局变量和局部变量"><span class="toc-text">1.全局变量和局部变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-变量类型操作符"><span class="toc-text">2.变量类型操作符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-变量的类型"><span class="toc-text">3.变量的类型</span></a></li></ol>
                 </div>
             </div>
         </div>

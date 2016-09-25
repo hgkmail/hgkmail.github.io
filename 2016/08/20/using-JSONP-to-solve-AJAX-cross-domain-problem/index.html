@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        JavaScript的闭包｜CoderKim&#39;s blog
+        使用JSONP解决AJAX跨域问题｜CoderKim&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://coderkim.tech/2016/09/25/javascript-closure/">
+    <link rel="canonical" href="http://coderkim.tech/2016/08/20/using-JSONP-to-solve-AJAX-cross-domain-problem/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -79,13 +79,13 @@
                     
                         
                         <li>
-                            <a href="/Tags/">Tags</a>
+                            <a href="/my-works/">my works</a>
                         </li>
                         
                     
                         
                         <li>
-                            <a href="/my-works/">my works</a>
+                            <a href="/Tags/">Tags</a>
                         </li>
                         
                     
@@ -148,12 +148,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>JavaScript的闭包</h1>
+                    <h1>使用JSONP解决AJAX跨域问题</h1>
                     
                     <span class="meta">
                          作者 CoderKim
                         <span>
-                          日期 2016-09-25
+                          日期 2016-08-20
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -168,7 +168,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            JavaScript的闭包
+            使用JSONP解决AJAX跨域问题
         </span>
     </div>
 </header>
@@ -179,23 +179,38 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>闭包是指有权访问另一个函数作用域中变量的函数，创建闭包的常见方式，是在一个函数内部创建另一个函数。</p>
-<p>闭包的机制是<strong>作用域链</strong>，一般的函数的作用域链是：全局作用域-&gt;函数局部作用域，函数执行完后，函数局部作用域就销毁了；而闭包的作用域链有所不同：全局作用域-&gt;包含函数作用域-&gt;闭包作用域，包含闭包的函数执行完后，其作用域并没有完全销毁，作用域中被闭包捕获的变量会一直存活，供闭包使用，直到闭包被回收。所以闭包携带了包含它的函数的作用域，会比一般的函数占用内存。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> createFunction=<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> num=<span class="number">10</span>;</div><div class="line">    <span class="comment">// 闭包捕获外部变量num，在闭包回收前num不会被销毁</span></div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        num+=<span class="number">1</span>;</div><div class="line">        alert(num);</div><div class="line">    &#125;;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> add=createFunction();</div><div class="line">add(); <span class="comment">// "11"</span></div><div class="line">add(); <span class="comment">// "12"</span></div><div class="line">add(); <span class="comment">// "13"</span></div></pre></td></tr></table></figure></p>
-<p>闭包有几个要注意的地方。</p>
-<h2 id="1-变量被闭包捕获后就不要修改了"><a href="#1-变量被闭包捕获后就不要修改了" class="headerlink" title="1.变量被闭包捕获后就不要修改了"></a>1.变量被闭包捕获后就不要修改了</h2><p>闭包捕获的是变量，而不是变量的某个值/副本。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createFunctions</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> result=<span class="keyword">new</span> <span class="built_in">Array</span>();</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++) &#123;</div><div class="line">        result[i]=<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> i;</div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>上面的代码中，闭包捕获了外部变量i，但i在被捕获后进行自增，所以result里面的函数都返回i最后的值10，而不是0、1、2……解决方法是用匿名函数增加一个作用域。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createFunctions</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> result=<span class="keyword">new</span> <span class="built_in">Array</span>();</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++) &#123;</div><div class="line">        +<span class="function"><span class="keyword">function</span>(<span class="params">num</span>) </span>&#123;</div><div class="line">            result[num]=<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">                <span class="keyword">return</span> num;</div><div class="line">            &#125;;</div><div class="line">        &#125;(i);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h2 id="2-闭包的this对象"><a href="#2-闭包的this对象" class="headerlink" title="2.闭包的this对象"></a>2.闭包的this对象</h2><p>如果闭包当匿名函数执行，闭包中的this对象通常指向window。</p>
-<h2 id="3-利用闭包实现私有变量"><a href="#3-利用闭包实现私有变量" class="headerlink" title="3.利用闭包实现私有变量"></a>3.利用闭包实现私有变量</h2><p>外部无法访问闭包捕获的变量，将公开函数以闭包的形式定义，捕获的变量可以当做私有变量。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyObject</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> privateVariable=<span class="number">10</span>;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">privateFunction</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">20</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">this</span>.publicFunction=<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        privateVariable++;</div><div class="line">        <span class="keyword">return</span> privateFunction();</div><div class="line">    &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+                <h2 id="1-同源策略"><a href="#1-同源策略" class="headerlink" title="1.同源策略"></a>1.同源策略</h2><blockquote>
+<p>同源策略阻止从一个域上加载的脚本获取或操作另一个域上的文档属性。也就是说，受到请求的 URL 的域必须与当前 Web 页面的域相同。这意味着浏览器隔离来自不同源的内容，以防止它们之间的操作。这个浏览器策略很旧，从 Netscape Navigator 2.0 版本开始就存在。</p>
+</blockquote>
+<p>也就是说AJAX异步请求的url必须和当前页面的url有相同的domain，这在很多情况是不符合要求的，比如我的个人网站向一个天气网站请求天气数据，就请求不了。</p>
+<h2 id="2-script元素的src属性"><a href="#2-script元素的src属性" class="headerlink" title="2.script元素的src属性"></a>2.script元素的src属性</h2><p>script标签的src属性并不被同源策略所约束，可以获取任何服务器上脚本并执行，利用这点可以解决AJAX跨域问题。</p>
+<h2 id="3-JSONP"><a href="#3-JSONP" class="headerlink" title="3.JSONP"></a>3.JSONP</h2><p>JSONP（JSON with Padding）是一个非官方的协议，它允许在服务器端集成script元素返回至客户端，通过JavaScript callback的形式实现跨域访问，callback中传递的数据一般是JSON，所以叫JSON with Padding。下面是一个简单的实现形式（程序A和程序B是不同domain的）：</p>
+<p>程序A中sample的部分代码：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">// 定义回调函数</div><div class="line">function callback(data) &#123;</div><div class="line">    alert(data.message);</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;!-- 跨域JavaScript --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;http://localhost:20001/test.js&quot;&gt;&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p>程序B中test.js的代码：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">//调用callback函数，并以json数据形式作为参数传递，完成回调</div><div class="line">callback(&#123;message:&quot;success&quot;&#125;);</div></pre></td></tr></table></figure></p>
+<h2 id="4-JSONP的自动化"><a href="#4-JSONP的自动化" class="headerlink" title="4.JSONP的自动化"></a>4.JSONP的自动化</h2><p>一般情况下，我们希望这个跨域script标签能够动态生成，而不是像上面固定在html里面所以没等页面显示就执行了，很不灵活。我们可以通过JavaScript动态地创建script标签，这样我们就可以灵活调用远程服务了。</p>
+<p>比如Google的ajax搜索接口：<a href="http://ajax.googleapis.com/ajax/services/search/web?v=1.0&amp;q=?&amp;callback=?" target="_blank" rel="external">http://ajax.googleapis.com/ajax/services/search/web?v=1.0&amp;q=?&amp;callback=?</a> </p>
+<p>q=?这个问号是表示你要搜索的内容，<strong>最重要的是第二个callback=?这个是正如其名表示回调函数的名称</strong>，也就是将你自己在客户端定义的回调函数的函数名传送给服务端，服务端则会返回以你定义的回调函数名的方法，将获取的json数据传入这个方法完成回调。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">    // 动态添加script标签</div><div class="line">    function addScriptTag(src)&#123;</div><div class="line">        var script = document.createElement(&apos;script&apos;);</div><div class="line">        script.setAttribute(&quot;type&quot;,&quot;text/javascript&quot;);</div><div class="line">        script.src = src;</div><div class="line">        document.body.appendChild(script);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    window.onload = function()&#123;</div><div class="line">        //搜索apple，将自定义的回调函数名result传入callback参数中</div><div class="line">        addScriptTag(&quot;http://ajax.googleapis.com/ajax/services/search/web?v=1.0&amp;q=apple&amp;callback=result&quot;);</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    //自定义的回调函数result</div><div class="line">    function result(data) &#123;</div><div class="line">        //我们就简单的获取apple搜索结果的第一条记录中url数据</div><div class="line">        alert(data.responseData.results[0].unescapedUrl);</div><div class="line">    &#125;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p>用script标签来调用跨域的远程接口，用callback来接收数据，这的确有点绕。。。</p>
+<p>参考：</p>
+<ul>
+<li><a href="http://www.cnblogs.com/chopper/archive/2012/03/24/2403945.html" target="_blank" rel="external">深入浅出JSONP–解决ajax跨域问题</a></li>
+<li><a href="http://justcoding.iteye.com/blog/1366102/" target="_blank" rel="external">AJAX 跨域请求 - JSONP获取JSON数据</a></li>
+</ul>
 
                 <hr>
                 
 
                 <ul class="pager">
                     
+                    <li class="previous">
+                        <a href="/2016/08/29/javascript-variables/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript的变量">&larr; Previous Post</a>
+                    </li>
+                    
                     
                     <li class="next">
-                        <a href="/2016/09/25/creation-and-inheritance-of-objects-in-javascript/" data-toggle="tooltip" data-placement="top"
-                           title="JavaScript中对象的创建和继承">Next Post &rarr;</a>
+                        <a href="/2016/08/12/using-javascript-in-html/" data-toggle="tooltip" data-placement="top"
+                           title="在HTML中引入JavaScript">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -204,9 +219,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2016/09/25/javascript-closure/"
-                         data-title="JavaScript的闭包"
-                         data-url="http://coderkim.tech/2016/09/25/javascript-closure/">
+                         data-thread-key="2016/08/20/using-JSONP-to-solve-AJAX-cross-domain-problem/"
+                         data-title="使用JSONP解决AJAX跨域问题"
+                         data-url="http://coderkim.tech/2016/08/20/using-JSONP-to-solve-AJAX-cross-domain-problem/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -218,7 +233,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-变量被闭包捕获后就不要修改了"><span class="toc-text">1.变量被闭包捕获后就不要修改了</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-闭包的this对象"><span class="toc-text">2.闭包的this对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-利用闭包实现私有变量"><span class="toc-text">3.利用闭包实现私有变量</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-同源策略"><span class="toc-text">1.同源策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-script元素的src属性"><span class="toc-text">2.script元素的src属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-JSONP"><span class="toc-text">3.JSONP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-JSONP的自动化"><span class="toc-text">4.JSONP的自动化</span></a></li></ol>
                 </div>
             </div>
         </div>

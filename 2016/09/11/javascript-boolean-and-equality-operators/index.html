@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        使用JSONP解决AJAX跨域问题｜CoderKim&#39;s blog
+        JavaScript的布尔和相等操作符｜CoderKim&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://coderkim.tech/2016/09/25/using-JSONP-to-solve-AJAX-cross-domain-problem/">
+    <link rel="canonical" href="http://coderkim.tech/2016/09/11/javascript-boolean-and-equality-operators/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -79,13 +79,13 @@
                     
                         
                         <li>
-                            <a href="/Tags/">Tags</a>
+                            <a href="/my-works/">my works</a>
                         </li>
                         
                     
                         
                         <li>
-                            <a href="/my-works/">my works</a>
+                            <a href="/Tags/">Tags</a>
                         </li>
                         
                     
@@ -148,12 +148,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>使用JSONP解决AJAX跨域问题</h1>
+                    <h1>JavaScript的布尔和相等操作符</h1>
                     
                     <span class="meta">
                          作者 CoderKim
                         <span>
-                          日期 2016-09-25
+                          日期 2016-09-11
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -168,7 +168,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            使用JSONP解决AJAX跨域问题
+            JavaScript的布尔和相等操作符
         </span>
     </div>
 </header>
@@ -179,23 +179,10 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <h2 id="1-同源策略"><a href="#1-同源策略" class="headerlink" title="1.同源策略"></a>1.同源策略</h2><blockquote>
-<p>同源策略阻止从一个域上加载的脚本获取或操作另一个域上的文档属性。也就是说，受到请求的 URL 的域必须与当前 Web 页面的域相同。这意味着浏览器隔离来自不同源的内容，以防止它们之间的操作。这个浏览器策略很旧，从 Netscape Navigator 2.0 版本开始就存在。</p>
-</blockquote>
-<p>也就是说AJAX异步请求的url必须和当前页面的url有相同的domain，这在很多情况是不符合要求的，比如我的个人网站向一个天气网站请求天气数据，就请求不了。</p>
-<h2 id="2-script元素的src属性"><a href="#2-script元素的src属性" class="headerlink" title="2.script元素的src属性"></a>2.script元素的src属性</h2><p>script标签的src属性并不被同源策略所约束，可以获取任何服务器上脚本并执行，利用这点可以解决AJAX跨域问题。</p>
-<h2 id="3-JSONP"><a href="#3-JSONP" class="headerlink" title="3.JSONP"></a>3.JSONP</h2><p>JSONP（JSON with Padding）是一个非官方的协议，它允许在服务器端集成script元素返回至客户端，通过JavaScript callback的形式实现跨域访问，callback中传递的数据一般是JSON，所以叫JSON with Padding。下面是一个简单的实现形式（程序A和程序B是不同domain的）：</p>
-<p>程序A中sample的部分代码：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">// 定义回调函数</div><div class="line">function callback(data) &#123;</div><div class="line">    alert(data.message);</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;!-- 跨域JavaScript --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;http://localhost:20001/test.js&quot;&gt;&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>程序B中test.js的代码：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">//调用callback函数，并以json数据形式作为参数传递，完成回调</div><div class="line">callback(&#123;message:&quot;success&quot;&#125;);</div></pre></td></tr></table></figure></p>
-<h2 id="4-JSONP的自动化"><a href="#4-JSONP的自动化" class="headerlink" title="4.JSONP的自动化"></a>4.JSONP的自动化</h2><p>一般情况下，我们希望这个跨域script标签能够动态生成，而不是像上面固定在html里面所以没等页面显示就执行了，很不灵活。我们可以通过JavaScript动态地创建script标签，这样我们就可以灵活调用远程服务了。</p>
-<p>比如Google的ajax搜索接口：<a href="http://ajax.googleapis.com/ajax/services/search/web?v=1.0&amp;q=?&amp;callback=?" target="_blank" rel="external">http://ajax.googleapis.com/ajax/services/search/web?v=1.0&amp;q=?&amp;callback=?</a> </p>
-<p>q=?这个问号是表示你要搜索的内容，<strong>最重要的是第二个callback=?这个是正如其名表示回调函数的名称</strong>，也就是将你自己在客户端定义的回调函数的函数名传送给服务端，服务端则会返回以你定义的回调函数名的方法，将获取的json数据传入这个方法完成回调。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">    // 动态添加script标签</div><div class="line">    function addScriptTag(src)&#123;</div><div class="line">        var script = document.createElement(&apos;script&apos;);</div><div class="line">        script.setAttribute(&quot;type&quot;,&quot;text/javascript&quot;);</div><div class="line">        script.src = src;</div><div class="line">        document.body.appendChild(script);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    window.onload = function()&#123;</div><div class="line">        //搜索apple，将自定义的回调函数名result传入callback参数中</div><div class="line">        addScriptTag(&quot;http://ajax.googleapis.com/ajax/services/search/web?v=1.0&amp;q=apple&amp;callback=result&quot;);</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    //自定义的回调函数result</div><div class="line">    function result(data) &#123;</div><div class="line">        //我们就简单的获取apple搜索结果的第一条记录中url数据</div><div class="line">        alert(data.responseData.results[0].unescapedUrl);</div><div class="line">    &#125;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>用script标签来调用跨域的远程接口，用callback来接收数据，这的确有点绕。。。</p>
-<p>参考：</p>
-<ul>
-<li><a href="http://www.cnblogs.com/chopper/archive/2012/03/24/2403945.html" target="_blank" rel="external">深入浅出JSONP–解决ajax跨域问题</a></li>
-<li><a href="http://justcoding.iteye.com/blog/1366102/" target="_blank" rel="external">AJAX 跨域请求 - JSONP获取JSON数据</a></li>
-</ul>
+                <p>布尔操作符和相等操作符是JavaScript中比较“内涵”的操作符，这里做一下备注。</p>
+<h2 id="1-逻辑与（-amp-amp-）"><a href="#1-逻辑与（-amp-amp-）" class="headerlink" title="1.逻辑与（&amp;&amp;）"></a>1.逻辑与（&amp;&amp;）</h2><p>逻辑与是一个短路操作，当第一个操作数相当于false（null，NaN，undefined）时，返回第一个操作数；当第一个操作数相当于true时，返回第二个操作数。我们可以看到，逻辑与<strong>返回的是一个操作数</strong>，而不是直接返回一个布尔值，利用这点，我们可以简化代码。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 当condition成立时才返回result</span></div><div class="line"><span class="keyword">var</span> value = condition &amp;&amp; result;</div></pre></td></tr></table></figure></p>
+<h2 id="2-逻辑或"><a href="#2-逻辑或" class="headerlink" title="2.逻辑或(||)"></a>2.逻辑或(||)</h2><p>逻辑或也是一个短路操作，当第一个操作数相当于true时，返回第一个操作数；当第一个操作数相当于false时，返回第二个操作数。和逻辑与类似，可以拿来简化代码。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// backupObject负责在preferredObject不包含有效值的情况下提供后备值</span></div><div class="line"><span class="keyword">var</span> value = preferredObject || backupObject;</div></pre></td></tr></table></figure></p>
+<h2 id="3-严格相等（-）"><a href="#3-严格相等（-）" class="headerlink" title="3.严格相等（ === ）"></a>3.严格相等（ === ）</h2><p>一般的相等（ == ）在比较时会进行类型转换，比如null == false是成立的，因为null转换为布尔值后就是false，相似的还有”” == false。如果需要在比较时不进行类型转换，就要用严格相等（ === ），它要求比较的操作数数据类型也要相同，所以null === false是不成立的。</p>
 
                 <hr>
                 
@@ -203,14 +190,14 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2016/09/25/javascript-variables/" data-toggle="tooltip" data-placement="top"
-                           title="JavaScript的变量">&larr; Previous Post</a>
+                        <a href="/2016/09/15/creation-and-inheritance-of-objects-in-javascript/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript中对象的创建和继承">&larr; Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2016/09/25/using-javascript-in-html/" data-toggle="tooltip" data-placement="top"
-                           title="在HTML中引入JavaScript">Next Post &rarr;</a>
+                        <a href="/2016/09/10/reference-type-of-javascript/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript的引用类型">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -219,9 +206,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2016/09/25/using-JSONP-to-solve-AJAX-cross-domain-problem/"
-                         data-title="使用JSONP解决AJAX跨域问题"
-                         data-url="http://coderkim.tech/2016/09/25/using-JSONP-to-solve-AJAX-cross-domain-problem/">
+                         data-thread-key="2016/09/11/javascript-boolean-and-equality-operators/"
+                         data-title="JavaScript的布尔和相等操作符"
+                         data-url="http://coderkim.tech/2016/09/11/javascript-boolean-and-equality-operators/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -233,7 +220,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-同源策略"><span class="toc-text">1.同源策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-script元素的src属性"><span class="toc-text">2.script元素的src属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-JSONP"><span class="toc-text">3.JSONP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-JSONP的自动化"><span class="toc-text">4.JSONP的自动化</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-逻辑与（-amp-amp-）"><span class="toc-text">1.逻辑与（&&）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-逻辑或"><span class="toc-text">2.逻辑或(||)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-严格相等（-）"><span class="toc-text">3.严格相等（ === ）</span></a></li></ol>
                 </div>
             </div>
         </div>

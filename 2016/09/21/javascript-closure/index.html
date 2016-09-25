@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        在HTML中引入JavaScript｜CoderKim&#39;s blog
+        JavaScript的闭包｜CoderKim&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://coderkim.tech/2016/09/25/using-javascript-in-html/">
+    <link rel="canonical" href="http://coderkim.tech/2016/09/21/javascript-closure/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -79,13 +79,13 @@
                     
                         
                         <li>
-                            <a href="/Tags/">Tags</a>
+                            <a href="/my-works/">my works</a>
                         </li>
                         
                     
                         
                         <li>
-                            <a href="/my-works/">my works</a>
+                            <a href="/Tags/">Tags</a>
                         </li>
                         
                     
@@ -148,12 +148,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>在HTML中引入JavaScript</h1>
+                    <h1>JavaScript的闭包</h1>
                     
                     <span class="meta">
                          作者 CoderKim
                         <span>
-                          日期 2016-09-25
+                          日期 2016-09-21
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -168,7 +168,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            在HTML中引入JavaScript
+            JavaScript的闭包
         </span>
     </div>
 </header>
@@ -179,25 +179,23 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>在HTML中引入JavaScript使用script元素，分为嵌入代码和外部文件代码2种，嵌入代码虽然没有什么问题，但不好维护，一般使用外部文件代码，它具有可维护和可缓存的优点。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;!-- 嵌入代码 --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">function sayHello() &#123;</div><div class="line">    alert(&quot;hello&quot;);</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;!-- 外部文件代码 --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example.js&quot;&gt;&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>按照惯例，script元素一般放在head元素中，如果有多个script元素，浏览器会按照顺序逐个下载和解析。放在head元素中有个缺点，就是必须等到全部的JavaScript下载、解析和执行完后才能呈现页面的内容（浏览器遇到body元素才开始呈现页面内容），下载尤其占用时间。因此可以把script元素放在body元素中的底部，这样页面呈现完后才开始涉及JavaScript，浏览器显示空白页的时间会缩短。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;head&gt;</div><div class="line">...</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">&lt;!-- 这里放内容... --&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example1.js&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;example2.js&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure></p>
-<p>script元素有2个和JavaScript加载顺序有关的属性：defer=”defer”表示立即下载脚本但等页面解析完再执行，async=”async”表示异步下载和执行脚本，脚本的下载和执行不会影响页面解析，由于异步其顺序无法确定，所以用async属性的脚本不能依赖其他脚本。</p>
-<p>浏览器在JavaScript被禁用时会显示noscript元素的内容。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">&lt;noscript&gt;</div><div class="line">&lt;p&gt;本页面需要启用JavaScript</div><div class="line">&lt;/noscript&gt;</div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure></p>
+                <p>闭包是指有权访问另一个函数作用域中变量的函数，创建闭包的常见方式，是在一个函数内部创建另一个函数。</p>
+<p>闭包的机制是<strong>作用域链</strong>，一般的函数的作用域链是：全局作用域-&gt;函数局部作用域，函数执行完后，函数局部作用域就销毁了；而闭包的作用域链有所不同：全局作用域-&gt;包含函数作用域-&gt;闭包作用域，包含闭包的函数执行完后，其作用域并没有完全销毁，作用域中被闭包捕获的变量会一直存活，供闭包使用，直到闭包被回收。所以闭包携带了包含它的函数的作用域，会比一般的函数占用内存。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> createFunction=<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> num=<span class="number">10</span>;</div><div class="line">    <span class="comment">// 闭包捕获外部变量num，在闭包回收前num不会被销毁</span></div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        num+=<span class="number">1</span>;</div><div class="line">        alert(num);</div><div class="line">    &#125;;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> add=createFunction();</div><div class="line">add(); <span class="comment">// "11"</span></div><div class="line">add(); <span class="comment">// "12"</span></div><div class="line">add(); <span class="comment">// "13"</span></div></pre></td></tr></table></figure></p>
+<p>闭包有几个要注意的地方。</p>
+<h2 id="1-变量被闭包捕获后就不要修改了"><a href="#1-变量被闭包捕获后就不要修改了" class="headerlink" title="1.变量被闭包捕获后就不要修改了"></a>1.变量被闭包捕获后就不要修改了</h2><p>闭包捕获的是变量，而不是变量的某个值/副本。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createFunctions</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> result=<span class="keyword">new</span> <span class="built_in">Array</span>();</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++) &#123;</div><div class="line">        result[i]=<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> i;</div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的代码中，闭包捕获了外部变量i，但i在被捕获后进行自增，所以result里面的函数都返回i最后的值10，而不是0、1、2……解决方法是用匿名函数增加一个作用域。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createFunctions</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> result=<span class="keyword">new</span> <span class="built_in">Array</span>();</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++) &#123;</div><div class="line">        +<span class="function"><span class="keyword">function</span>(<span class="params">num</span>) </span>&#123;</div><div class="line">            result[num]=<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">                <span class="keyword">return</span> num;</div><div class="line">            &#125;;</div><div class="line">        &#125;(i);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="2-闭包的this对象"><a href="#2-闭包的this对象" class="headerlink" title="2.闭包的this对象"></a>2.闭包的this对象</h2><p>如果闭包当匿名函数执行，闭包中的this对象通常指向window。</p>
+<h2 id="3-利用闭包实现私有变量"><a href="#3-利用闭包实现私有变量" class="headerlink" title="3.利用闭包实现私有变量"></a>3.利用闭包实现私有变量</h2><p>外部无法访问闭包捕获的变量，将公开函数以闭包的形式定义，捕获的变量可以当做私有变量。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyObject</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> privateVariable=<span class="number">10</span>;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">privateFunction</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">20</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">this</span>.publicFunction=<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        privateVariable++;</div><div class="line">        <span class="keyword">return</span> privateFunction();</div><div class="line">    &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
                 <hr>
                 
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2016/09/25/using-JSONP-to-solve-AJAX-cross-domain-problem/" data-toggle="tooltip" data-placement="top"
-                           title="使用JSONP解决AJAX跨域问题">&larr; Previous Post</a>
-                    </li>
-                    
                     
                     <li class="next">
-                        <a href="/2016/09/23/composition-of-javascript-implementation/" data-toggle="tooltip" data-placement="top"
-                           title="JavaScript实现的组成">Next Post &rarr;</a>
+                        <a href="/2016/09/15/creation-and-inheritance-of-objects-in-javascript/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript中对象的创建和继承">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -206,9 +204,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2016/09/25/using-javascript-in-html/"
-                         data-title="在HTML中引入JavaScript"
-                         data-url="http://coderkim.tech/2016/09/25/using-javascript-in-html/">
+                         data-thread-key="2016/09/21/javascript-closure/"
+                         data-title="JavaScript的闭包"
+                         data-url="http://coderkim.tech/2016/09/21/javascript-closure/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -220,7 +218,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-变量被闭包捕获后就不要修改了"><span class="toc-text">1.变量被闭包捕获后就不要修改了</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-闭包的this对象"><span class="toc-text">2.闭包的this对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-利用闭包实现私有变量"><span class="toc-text">3.利用闭包实现私有变量</span></a></li></ol>
                 </div>
             </div>
         </div>

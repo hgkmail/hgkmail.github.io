@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        JavaScript的函数｜CoderKim&#39;s blog
+        JavaScript中对象的创建和继承｜CoderKim&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://coderkim.tech/2016/09/25/javascript-function/">
+    <link rel="canonical" href="http://coderkim.tech/2016/09/15/creation-and-inheritance-of-objects-in-javascript/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -79,13 +79,13 @@
                     
                         
                         <li>
-                            <a href="/Tags/">Tags</a>
+                            <a href="/my-works/">my works</a>
                         </li>
                         
                     
                         
                         <li>
-                            <a href="/my-works/">my works</a>
+                            <a href="/Tags/">Tags</a>
                         </li>
                         
                     
@@ -148,12 +148,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>JavaScript的函数</h1>
+                    <h1>JavaScript中对象的创建和继承</h1>
                     
                     <span class="meta">
                          作者 CoderKim
                         <span>
-                          日期 2016-09-25
+                          日期 2016-09-15
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -168,7 +168,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            JavaScript的函数
+            JavaScript中对象的创建和继承
         </span>
     </div>
 </header>
@@ -179,38 +179,18 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>与其他语言的函数相比，ECMAScript的函数有一些特殊的灵活性。</p>
-<h2 id="1-不用指定返回类型"><a href="#1-不用指定返回类型" class="headerlink" title="1.不用指定返回类型"></a>1.不用指定返回类型</h2><p>函数声明：<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">functionName</span>(<span class="params">arg0, arg1, ..., argN</span>) </span>&#123;</div><div class="line">    statements</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>不返回类型的函数相当于返回undefined。</p>
-<h2 id="2-参数声明不是必要的"><a href="#2-参数声明不是必要的" class="headerlink" title="2.参数声明不是必要的"></a>2.参数声明不是必要的</h2><p>ECMAScript的函数参数就是一个数组arguments，不管有没有传参数或者传几个参数，少传的参数就是undefined。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHello</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    alert(<span class="string">"Hello "</span>+<span class="built_in">arguments</span>[<span class="number">0</span>]+<span class="string">","</span>+<span class="built_in">arguments</span>[<span class="number">1</span>]);</div><div class="line">&#125;</div><div class="line"></div><div class="line">sayHello(); <span class="comment">// Hello undefined,undefined</span></div><div class="line">sayHello(<span class="string">"tom"</span>); <span class="comment">// Hello tom,undefined</span></div><div class="line">sayHello(<span class="string">"tom"</span>, <span class="string">"how are you?"</span>); <span class="comment">// Hello tom,how are you?</span></div></pre></td></tr></table></figure></p>
-<h2 id="3-没有重载"><a href="#3-没有重载" class="headerlink" title="3.没有重载"></a>3.没有重载</h2><p>从上面可以知道，函数的参数不是必要的，所以ECMAScript没有函数签名的概念，决定函数的只有函数名。如果声明多个名称相同、参数不同的函数，浏览器只会取最后一个。</p>
-<h2 id="4-按值传递"><a href="#4-按值传递" class="headerlink" title="4.按值传递"></a>4.按值传递</h2><p>ECMAScript中所有的函数参数都是按值传递，引用类型参数保存的是对象的地址，所以传递对象的地址后可以修改外部的对象。</p>
-<h2 id="5-没有块级作用域"><a href="#5-没有块级作用域" class="headerlink" title="5.没有块级作用域"></a>5.没有块级作用域</h2><p>ECMAScript中语句的花括号是没有作用域的，比如:<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">for</span>(int i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++) &#123;</div><div class="line">    doSomething(i);</div><div class="line">&#125;</div><div class="line">alert(i); <span class="comment">// 10</span></div></pre></td></tr></table></figure></p>
-<p>在java和c++中是有块级作用域的，ECMAScript这个特点容易引起困惑，不过我们可以使用函数表达式来模拟块级作用域。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">for</span>(int i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++) &#123;</div><div class="line">        doSomething(i);</div><div class="line">    &#125;</div><div class="line">&#125;)();</div><div class="line">alert(i); <span class="comment">// 错误，未定义</span></div></pre></td></tr></table></figure></p>
-<h2 id="6-可以改变作用对象"><a href="#6-可以改变作用对象" class="headerlink" title="6.可以改变作用对象"></a>6.可以改变作用对象</h2><p>在ECMAScript中函数可以从一个对象传递到另一个对象，也可以直接使用call和apply，来改变函数的作用对象。call和apply区别在于call的第二个参数可以是任意类型，而apply的第二个参数必须是数组，即arguments。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHello</span>(<span class="params">a, b</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"Hello "</span>+<span class="keyword">this</span>.firstName+<span class="string">","</span>+a+b);</div><div class="line">&#125;</div><div class="line"></div><div class="line">person1=<span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line">person1.firstName=<span class="string">"p1"</span>;</div><div class="line"></div><div class="line">person2=<span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line">person2.firstName=<span class="string">"p2"</span>;</div><div class="line"></div><div class="line">sayHello.call(person1, <span class="string">"aaa"</span>, <span class="string">"bbb"</span>); <span class="comment">// Hello p1,aaabbb</span></div><div class="line">sayHello.apply(person2, [<span class="string">"ccc"</span>, <span class="string">"ddd"</span>]); <span class="comment">// Hello p2,cccddd</span></div><div class="line"></div><div class="line">person1.sayHi=sayHello;</div><div class="line">person1.sayHi(<span class="string">"aaa"</span>, <span class="string">"bbb"</span>); <span class="comment">// Hello p1,aaabbb</span></div></pre></td></tr></table></figure></p>
-<h2 id="7-this、arguments、callee、caller"><a href="#7-this、arguments、callee、caller" class="headerlink" title="7.this、arguments、callee、caller"></a>7.this、arguments、callee、caller</h2><p>这几个属性不是函数一开始就有的，是函数被调用时产生的。</p>
-<p><strong>this</strong>表示函数的调用者（callingContext），全局函数的this是window，上面person1.sayHi中sayHi的this是person1。this不是固定不变的，可以通过call、apply、bind和函数传递改变。</p>
-<blockquote>
-<p>this不遵守作用域链查找规则。函数执行时，this 总是指向调用该函数的对象，规则可以简单概括如下：</p>
-<ul>
-<li>有对象就指向调用对象</li>
-<li>没调用对象就指向全局对象</li>
-<li>用new构造就指向新对象</li>
-<li>通过 apply 或 call 或 bind 可以改变this的指向</li>
-</ul>
-</blockquote>
-<p><strong>arguments</strong>表示调用函数时传递进来的参数列表，而不是函数声明时的参数列表。</p>
-<p><strong>callee</strong>是arguments的一个属性，arguments.callee表示arguments所在的函数，写递归时可以用它代表函数名：<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fibonacci</span>(<span class="params">n</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span>(n==<span class="number">1</span> || n==<span class="number">2</span>)</div><div class="line">        <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">arguments</span>.callee(n<span class="number">-1</span>)+<span class="built_in">arguments</span>.callee(n<span class="number">-2</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p><strong>caller</strong>表示调用这个函数的函数，如果调用这个函数的不是函数，则caller为null。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">testCaller</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> caller = testCaller.caller;</div><div class="line">    alert(caller);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">aCaller</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    testCaller();</div><div class="line">&#125;</div><div class="line"></div><div class="line">aCaller();</div></pre></td></tr></table></figure></p>
-<h2 id="8-可以变身为构造函数"><a href="#8-可以变身为构造函数" class="headerlink" title="8.可以变身为构造函数"></a>8.可以变身为构造函数</h2><p>普通函数前面加一个关键字new，就变成构造函数了。一般构造函数的开头字母大写，以此来区分普通函数。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name=name;</div><div class="line">    <span class="keyword">this</span>.age=age;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1=<span class="keyword">new</span> Person(<span class="string">"tom"</span>, <span class="number">20</span>);</div></pre></td></tr></table></figure></p>
-<p>这其中可以分为几个步骤：</p>
-<ol>
-<li>创建一个新的对象person1</li>
-<li>将person1的constructor设为Person</li>
-<li>Person.call(person1, “tom”, 20)</li>
-<li>返回person1</li>
-</ol>
-<p>函数有个prototype属性，表示这个函数构造出来的对象的原型，所谓的原型就是一个对象保存一些共享的属性和方法。</p>
+                <p>对象的创建和继承是面向对象语言中最常见的事情，一般的面向对象语言都有类的概念，而JavaScript没有，所以JavaScript比较特别。在JavaScript中，对象是一种引用类型，对象的继承是基于原型（prototype）的。</p>
+<h2 id="1-对象的属性"><a href="#1-对象的属性" class="headerlink" title="1.对象的属性"></a>1.对象的属性</h2><p>在JavaScript中，除了用key/value的形式定义属性，还有一种比较正规的方式——Object.defineProperty。属性可以细分为<strong>数据属性</strong>和<strong>访问器属性</strong>。</p>
+<p>Object.defineProperty方式可以设置<strong>数据属性</strong>的4个特征：configurable（属性是否可以用delete删除）、enumerable（属性是否可以用for-in枚举）、writable（属性是否可写）和value（属性的值，默认是undefined）。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> person=<span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line"><span class="comment">// 定义了一个只读属性name</span></div><div class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">"name"</span>, &#123;</div><div class="line">    <span class="attr">writable</span>: <span class="literal">false</span>,</div><div class="line">    <span class="attr">value</span>: <span class="string">"Tom"</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>Object.defineProperty方式也可以设置<strong>访问器属性</strong>的4个特征：configurable（属性是否可以用delete删除）、enumerable（属性是否可以用for-in枚举）、get（读取属性时调用的函数，默认undefined）和set（写入属性时调用的函数，默认undefined）。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> book=&#123;</div><div class="line">    <span class="attr">_year</span>: <span class="number">2016</span></div><div class="line">&#125;;</div><div class="line"><span class="built_in">Object</span>.defineProperty(book, <span class="string">"year"</span>, &#123;</div><div class="line">    <span class="attr">get</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>._year;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">set</span>: <span class="function"><span class="keyword">function</span>(<span class="params">newValue</span>) </span>&#123;</div><div class="line">        <span class="keyword">this</span>._year=newValue;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>IE8是第一个支持Object.defineProperty的浏览器，不过IE8是部分实现，IE9+才全部实现。</p>
+<p>定义多个属性：Object.defineProperties()</p>
+<p>读取属性的特征：Object.getOwnPropertyDescriptor()</p>
+<h2 id="2-对象的创建"><a href="#2-对象的创建" class="headerlink" title="2.对象的创建"></a>2.对象的创建</h2><p>在JavaScript中，对象的创建有多种模式，有优点也有缺点，这里只描述下使用最广泛、认同度最高的一种创建模式——组合使用构造函数模式和原型模式。这种模式一般在构造函数中添加对象独有的属性，在原型中添加对象共享的函数。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 在构造函数中添加对象独有的属性</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name=name;</div><div class="line">    <span class="keyword">this</span>.age=age;</div><div class="line">    <span class="keyword">this</span>.friends=[<span class="string">"Tom"</span>, <span class="string">"Mary"</span>];</div><div class="line">&#125;</div><div class="line"><span class="comment">// 在原型中添加对象共享的函数</span></div><div class="line">Person.prototype=&#123;</div><div class="line">    <span class="attr">constructor</span>: Person,</div><div class="line">    <span class="attr">sayName</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        alert(<span class="keyword">this</span>.name);</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1=<span class="keyword">new</span> Person(<span class="string">"LiLei"</span>, <span class="number">20</span>);</div><div class="line"><span class="keyword">var</span> person2=<span class="keyword">new</span> Person(<span class="string">"Jenny"</span>, <span class="number">18</span>);</div></pre></td></tr></table></figure></p>
+<p>之所以这么做，是因为构造函数模式中添加的属性和函数都是每个对象一份（独有）的，这对函数来说是浪费内存的，同一类型的对象共用一个函数就可以了；而原型模式中添加的属性和函数是每个对象都共享的，这对引用类型的属性来说会引起混淆。综合两种模式的优点和缺点，得到这种所谓的组合使用构造函数模式和原型模式。</p>
+<p>有些程序员喜欢把原型的创建放在构造函数里面，原型只需要创建一遍，产生一种所谓的动态原型模式。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 在构造函数中添加对象独有的属性</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name=name;</div><div class="line">    <span class="keyword">this</span>.age=age;</div><div class="line">    <span class="keyword">this</span>.friends=[<span class="string">"Tom"</span>, <span class="string">"Mary"</span>];</div><div class="line">    </div><div class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> <span class="keyword">this</span>.sayName != <span class="string">"function"</span>) &#123;</div><div class="line">        <span class="comment">// 在原型中添加对象共享的函数</span></div><div class="line">        Person.prototype=&#123;</div><div class="line">            <span class="attr">constructor</span>: Person,</div><div class="line">            <span class="attr">sayName</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">                alert(<span class="keyword">this</span>.name);</div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1=<span class="keyword">new</span> Person(<span class="string">"LiLei"</span>, <span class="number">20</span>);</div><div class="line"><span class="keyword">var</span> person2=<span class="keyword">new</span> Person(<span class="string">"Jenny"</span>, <span class="number">18</span>);</div></pre></td></tr></table></figure></p>
+<h2 id="3-对象的继承"><a href="#3-对象的继承" class="headerlink" title="3.对象的继承"></a>3.对象的继承</h2><p>在JavaScript中，对象的继承也有多种模式，这里只描述开发人员普遍认为是最理想的继承范式——寄生组合式继承，YUI的YAHOO.lang.extend()和Backbone.extend()都采用了这种继承。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 父类型</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">SuperType</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name=<span class="string">"Tom"</span>;</div><div class="line">    <span class="keyword">this</span>.friends=[<span class="string">"Mary"</span>, <span class="string">"Mike"</span>];</div><div class="line">&#125;</div><div class="line"></div><div class="line">SuperType.prototype=&#123;</div><div class="line">    <span class="attr">constructor</span>: SuperType,</div><div class="line">    <span class="attr">sayName</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        alert(<span class="keyword">this</span>.name);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 子类型</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">SubType</span>(<span class="params">name, age</span>) </span>&#123;</div><div class="line">    <span class="comment">// 调用父类的构造函数，继承每个对象都有一份的属性</span></div><div class="line">    SuperType.call(<span class="keyword">this</span>, name);</div><div class="line">    <span class="keyword">this</span>.age=age;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 利用Object.create()继承原型，SubType.prototype的原型会指向SuperType.prototype</span></div><div class="line">SubType.prototype=<span class="built_in">Object</span>.create(SuperType.prototype);</div><div class="line"><span class="comment">// 指定新的构造函数</span></div><div class="line">SubType.prototype.constructor=SubType;</div><div class="line"><span class="comment">// 添加一些子类的方法</span></div><div class="line">SubType.prototype.sayAge=<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    alert(<span class="keyword">this</span>.age);</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>其中的Object.create()做了什么呢？它仅仅是把SubType.prototype的原型指向SuperType.prototype，建立一条原型链。<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line"><span class="built_in">Object</span>.create = <span class="function"><span class="keyword">function</span>(<span class="params">o</span>) </span>&#123;</div><div class="line">    <span class="comment">// 定义一个空的构造函数</span></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>) </span>&#123;&#125;</div><div class="line">    F.prototype=o;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> F();</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
 
                 <hr>
                 
@@ -218,14 +198,14 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2016/09/25/reference-type-of-javascript/" data-toggle="tooltip" data-placement="top"
-                           title="JavaScript的引用类型">&larr; Previous Post</a>
+                        <a href="/2016/09/21/javascript-closure/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript的闭包">&larr; Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2016/09/25/javascript-variables/" data-toggle="tooltip" data-placement="top"
-                           title="JavaScript的变量">Next Post &rarr;</a>
+                        <a href="/2016/09/11/javascript-boolean-and-equality-operators/" data-toggle="tooltip" data-placement="top"
+                           title="JavaScript的布尔和相等操作符">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -234,9 +214,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2016/09/25/javascript-function/"
-                         data-title="JavaScript的函数"
-                         data-url="http://coderkim.tech/2016/09/25/javascript-function/">
+                         data-thread-key="2016/09/15/creation-and-inheritance-of-objects-in-javascript/"
+                         data-title="JavaScript中对象的创建和继承"
+                         data-url="http://coderkim.tech/2016/09/15/creation-and-inheritance-of-objects-in-javascript/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -248,7 +228,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-不用指定返回类型"><span class="toc-text">1.不用指定返回类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-参数声明不是必要的"><span class="toc-text">2.参数声明不是必要的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-没有重载"><span class="toc-text">3.没有重载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-按值传递"><span class="toc-text">4.按值传递</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-没有块级作用域"><span class="toc-text">5.没有块级作用域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-可以改变作用对象"><span class="toc-text">6.可以改变作用对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-this、arguments、callee、caller"><span class="toc-text">7.this、arguments、callee、caller</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-可以变身为构造函数"><span class="toc-text">8.可以变身为构造函数</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-对象的属性"><span class="toc-text">1.对象的属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-对象的创建"><span class="toc-text">2.对象的创建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-对象的继承"><span class="toc-text">3.对象的继承</span></a></li></ol>
                 </div>
             </div>
         </div>
